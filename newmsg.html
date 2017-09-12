@@ -1,0 +1,31 @@
+<p id="t_i" class="tc_">New  Help Message</p>
+<div align="center" style="padding:5px;">
+<form method="post" action="snd_msg.php" style="width:500px" onSubmit="return UPLOADER.submit(this, {'onStart' : t, 'onComplete' : snt})" autocomplete="off">
+<!--<form method="post" action="snd_msg.php" style="width:500px">-->
+<table width="50%" border="0" cellpadding="0" cellspacing="5" style="margin-bottom:5px">
+  <tr>
+    <td><div style="margin-bottom:3px;">Subject</div>
+<input name="msubj" class="itext" type="text" style="width:250px">
+</td>
+  </tr>
+  <tr>
+    <td></td>
+  </tr>
+   <tr>
+    <td><div style="margin-bottom:3px;">Body</div><textarea name="mbody" style="resize:none" cols="" rows="" class="itextarea"></textarea></td>
+  </tr>
+  <tr>
+  	<td>
+    <div style="display:block;overflow:hidden;padding:8px 0;">
+        <p style="float:left">
+        <input name="submit" value="Send" id="ok" class="ibutton" type="submit" style="padding:1px 10px 1px" /> 
+        <input name="submit" value="Clear" class="ibutton" type="reset" style="padding:1px 10px 1px" />
+        <input name="button" value="Cancel" class="ibutton" type="button" onclick="return TINY.box.hide()" style="padding:1px 10px 1px" />    
+        </p>
+    </div>
+    
+    </td>
+  </tr>     
+</table>
+</form>
+</div>

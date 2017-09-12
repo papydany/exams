@@ -1,0 +1,5 @@
+[17-Feb-2017 03:59:30 America/New_York] PHP Notice:  Undefined offset: 11 in /home/unicalex/public_html/dump/inc/sqlbrowser/sqlbox.php on line 51
+[17-Feb-2017 04:35:47 America/New_York] PHP Notice:  Undefined index:  in /home/unicalex/public_html/dump/inc/mysql.php on line 385
+[17-Feb-2017 04:35:47 America/New_York] PHP Notice:  Undefined index:  in /home/unicalex/public_html/dump/inc/mysql.php on line 386
+[22-Mar-2017 16:03:56 UTC] PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 77841 bytes) in /home/unicalex/public_html/dump/inc/functions_dump.php on line 193
+[22-Mar-2017 16:07:34 UTC] PHP Notice:  crypt(): No salt parameter was specified. You must use a randomly generated salt and a strong hash function to produce a secure hash. in /home/unicalex/public_html/dump/inc/home/protection_create.php on line 49

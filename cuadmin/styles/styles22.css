@@ -1,0 +1,40 @@
+body {
+	font-family: Tahoma, Verdana;
+	font-size: 11px;
+	color: #000000;
+}
+.header {
+	font-size: 18px;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+a:hover {font-size: 11px;  color: darkblue; text-decoration: underline; font-weight: normal;}
+
+a:link {font-size: 11px;  color: #990000; text-decoration:underline; font-weight: normal;}
+
+a:visited {font-size: 11px;  color: #6699CC; text-decoration: underline; font-weight: normal;}
+
+a:active {font-size: 11px;  color: #333333; text-decoration:underline; font-weight: normal;}
+.border {
+	border-top: 1px none #000000;
+	border-right: 1px solid #000000;
+	border-bottom: 1px none #000000;
+	border-left: 1px solid #000000;
+}
+.border2 {
+	border-top: 1px none #336699;
+	border-right: 1px solid #336699;
+	border-bottom: 1px solid #336699;
+	border-left: 1px solid #336699;
+}
+.white {
+	color: #FFFFFF;
+}
+.border3 {
+
+
+	border-top: 1px none #FFFFFF;
+	border-right: 1px none #FFFFFF;
+	border-bottom: 1px solid #FFFFFF;
+	border-left: 1px none #FFFFFF;
+}

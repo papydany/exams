@@ -1,0 +1,49 @@
+@charset "utf-8";
+/* UNICAL REPORT STYLE SHEET */
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{border:0 none;font-family:inherit;font-size:100%;font-style:inherit;font-weight:inherit;vertical-align:baseline;margin:0;padding:0;}
+*{margin:0;padding:0;}
+body{ font-family:arial; font-size:12px; margin:10px;}
+table.TABLE{ border:1px solid #000; border-right:none; }
+table.TABLE td, table.TABLE th{padding:2px;}
+.thead th{ border-right:1px solid #000;} 
+table.TABLE tbody td{ border-right:1px solid #000; border-top:1px solid #000;}
+.noB td{ border-top:none !important;}
+.tB{ border-top:1px solid #000;}
+.bbt{ vertical-align:bottom; width:65px;}
+.B{ font-weight:700;}
+.s9{ font-size:9px;}
+.dw{ width:140px; display:block; word-spacing:.1px;}
+td.bt{border-top:1px dotted #000 !important;}
+.ups{
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+-o-transform: rotate(-90deg);
+-khtml-transform: rotate(-90deg);
+
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+height:70px;
+text-align:center;
+width:20px;
+position:relative;
+left:25px;
+top:15px;
+}
+.block{ display:block; overflow:hidden;}
+.fl{ float:left;}
+.fr{float:right;}
+.bl{ border:1px solid #000; display:block; overflow:hidden; margin-bottom:5px; padding:3px 5px 5px;}
+.bl p{ margin-bottom:2px;}
+.br{ display:block; color:#000;}
+.sph p{ float:left; margin-right:80px;}
+.sph p span{ display:block; color:#000;}
+.center{ margin:40px auto; display:block;}
+
+.st div{ padding-top:5px; display:block; overflow:hidden; padding-left:20px; }
+.st .a{ color:#000; width:200px;}
+.st .b{ color:#000;}
+/*correctional*/
+table.corrTABLE{ margin-top:10px;}
+table.corrTABLE td{ padding:4px;}
+.corrTABLE .srn{ border-right:1px dashed #000; width:23px;}
+.tc{text-align:center;}
