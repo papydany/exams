@@ -66,13 +66,15 @@
 		foreach( $stdlist as $k=>$v ) {
 		//$cgpa = adv_get_cgpa($c_sess, $k, $c_lv);
 		 $cgpa = get_cgpa($c_sess, $k);	
+		 
           $fail_cu=get_fail_crunit($c_lv,$k,$c_sess); 
+
          $entry_year = get_entry_sesssion($k);
 	if(!in_array($k, $sus_array)){
 
 	if($entry_year['std_custome2'] >= $new_prob ){	
 			
-       if($cgpa >=1.00 && $cgpa <=1.49 && $fail_cu<=15|| $fail_cu==15){
+       if($cgpa >=1.00 && $cgpa <=1.49 && $fail_cu<=15 || $fail_cu==15){
       
        	$prob_ls[] =$k;
      	

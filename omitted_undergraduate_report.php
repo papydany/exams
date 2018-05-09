@@ -493,7 +493,7 @@ echo "Course Duration (".$c_duration." years.)<br>";
 	echo '<div class="sph block bl" style="margin-top:30px; ">
 	<div style="border-bottom:1px solid #000; padding:4px 10px;" class="block B">STATISTICS</div>
 	<div class="st block">
-	<div><p class="a">No Of Students Registered</p> <p class="b">',count( $std_off_list ),'</p></div>
+	<div><p class="a">No Of Students Registered</p> <p class="b">',$dcount,'</p></div>
 	<div><p class="a">No of Results Published</p> <p class="b">',$dcount,'</p></div>
 	</div>
 	</div>';

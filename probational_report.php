@@ -393,73 +393,20 @@ foreach( $std_off_list as $ind_std ) {
 					$second_semester= fetch_student_RESULT($ind_std['std_id'], $arr2, $s);
 					
 					$ll = array_merge($first_semester, array(1=>array()), array(1=>array()), $second_semester, array(1=>array()) );
-	       
+	      
 	          $cccc = probation_fetch_electives($ind_std['std_id'], $s, $l, 1);
+	          
+
 	       
 					for($i=0; $i<$k; $i++) {
 
 							if( $i == $sizea ) {
-							// input 1st elective
 
-
-///Addition to Remove Repeat Courses from Elective
-/*$bt= (string)get_fake_chrx( 1, $rpt_list, $carryov_list, $s, $ind_std['std_id'] );
-$el=trim((string)str_replace(" ","",$electives[1]));
-$el=trim((string)str_replace(","," ",$el));
-$el=strip_tags($el);
-
-$pc3=trim((string)str_replace("<br>","",$electives[1]));
-
-$p1 = explode(" ", $bt);
-$p2= explode(" ", $el);
-$result = array_diff($p2,$p1);
-$go1=implode("<br>", $result);
-
-//$pos = strpos($bt, $el);
-
-//echo $bt."**".$el."==".$go1."<hr>";
-
-
-if ($pos == false) 
-{
-  $ec=$electives[2]."***";
-} 
-else
-{
-   $ec="++";
-}*/
 							echo '<td class="tB s9">',probation_fetch_electives( $ind_std['std_id'], $s, $l, 1),'</td>';
 							continue;
 						}
 						if( $i == $sizeb ) {
-							// input 2nd elective
-///Addition to Remove Repeat Courses from Elective
 
-/*$bt= (string)get_fake_chrx( 2, $rpt_list, $carryov_list, $s, $ind_std['std_id'] );
-$el=trim((string)str_replace(" ","",$electives[2]));
-$el=trim((string)str_replace(","," ",$el));
-$el=strip_tags($el);
-
-$pc3=trim((string)str_replace("<br>","",$electives[2]));
-
-$p1 = explode(" ", $bt);
-$p2= explode(" ", $el);
-$result = array_diff($p2,$p1);
-$go1=implode("<br>", $result);
-
-@$pos = strpos($bt, $el);
-
-//echo $bt."**".$el."==".$go1."<hr>";
-
-
-if ($pos == false) 
-{
-  $ec=$electives[2]."***";
-} 
-else
-{
-   $ec="++";
-}*/
 
 							echo '<td class="tB s9">',probation_fetch_electives( $ind_std['std_id'], $s, $l, 2),'</td>';
 							continue;
@@ -518,7 +465,7 @@ echo '</tbody></table>';
 	echo '<div class="sph block bl" style="margin-top:30px; ">
 	<div style="border-bottom:1px solid #000; padding:4px 10px;" class="block B">STATISTICS</div>
 	<div class="st block">
-	<div><p class="a">No Of Students Registered</p> <p class="b">',get_count_numstd_reg( $d, $s, $l, $c_duration, $fos ),'</p></div>
+	<div><p class="a">No Of Students Registered</p> <p class="b">',count( $std_off_list ),'</p></div>
 	<div><p class="a">No of Results Published</p> <p class="b">',count( $std_off_list ),'</p></div>
 	</div>
 	</div>';

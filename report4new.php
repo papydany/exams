@@ -43,6 +43,7 @@ $_SESSION['myfac'] = $f;
 //$_SESSION['agric_setup'] = (($d == 25) || ($f == 6))? true: false;
 $_SESSION['agric_setup'] = ($f == 6)? true: false;
 $new_prob =2012;
+$new_prob1 =2014;
 //------------------- END SETUP------------------------
 //report design setting
 
@@ -243,6 +244,7 @@ echo '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="TABL
 		$sizeb =  $aa + 1 + $ab + 1;
 	
 		$k = (int)($aa + $ab) + 1 + 2; // additional 2 is for the two elective spaces
+		
 		$list = array_merge( $list_courses_first, array(1=>'elective'), array(1=>''), $list_courses_sec, array(1=>'elective') );
 		
 
@@ -323,14 +325,14 @@ echo '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="TABL
 	$std_off_list= fetch_student_mat( $d, $p, $l, $f, $s, $fos, $special, $c_duration );
 
 
-
+	
 $c=0;
 
 
 $std_off1 =$std_off_list;
 $std1=array();
 
-//var_dump($std_off1);
+
 
 if($_GET["spxx"]=="Yes") //Displaying of special result
 {
@@ -368,6 +370,7 @@ foreach( $std_off_list as $ind_std )
 					$second_semester = fetch_student_RESULT_sessional($ind_std['std_id'], $arr2, $s, $regdcourses);
 					$second_semester = empty($second_semester) ? array('') : $second_semester;
 					$ll = array_merge($first_semester, array(1=>array()), array(1=>array()), $second_semester, array(1=>array()) );
+					
 					
 					$electives = std_elective_result( $ind_std['std_id'], $s, $l, $fos );
 					
@@ -772,13 +775,14 @@ if(($l == 3) && ($f == 6 || $d == 25)){
 		//if ( $cum_gpa < 1.00 ) continue ;// probation function
 	// end check
 	$entry_year = get_entry_sesssion($ind_std['std_id']);
-	if($entry_year['std_custome2'] >= $new_prob ){	
+	if($entry_year['std_custome2'] >= $new_prob && $entry_year['std_custome2'] < $new_prob1){	
 		
-
  if($cgpa >=1.00 && $cgpa <=1.49 || $fail_cu ==15) continue;
 
-		
-		}
+}elseif($entry_year['std_custome2'] >= $new_prob1)
+{
+if($cgpa >=1.5 && $fail_cu ==15) continue;
+}
 	
 $c++;
 
@@ -1041,27 +1045,18 @@ if ( $special ) {
 
 		}else {
 
-
-
-
-		//var_dump($ind_std['std_id']);		
-
-				$cgpa = auto_cgpa(($s - 1), $ind_std['std_id'], $l, $c_duration, $year_of_study);
+		$cgpa = auto_cgpa(($s - 1), $ind_std['std_id'], $l, $c_duration, $year_of_study);
 		if ( $cgpa >= 0.75 && $cgpa < 1.00 ) continue ;
-	
+		$entry_year = get_entry_sesssion($ind_std['std_id']);
+	if($entry_year['std_custome2'] >= $new_prob && $entry_year['std_custome2'] < $new_prob1){	
+		
+ if($cgpa >=1.00 && $cgpa <=1.49 || $fail_cu ==15) continue;
 
-		if($s== 2012 && $l==1||  $s ==2013 && $l >=1 && $l<3 || $s==2014 && $l>=1 && $l< 4 || $s ==2015 && $l>=1 && $l<5 || $s ==2016 && $l >=1 && $l < 6 || $s ==2017 && $l>=1 && $l< 7 || $s ==2018 && $l >=1 && $l<=7 ){
+}elseif($entry_year['std_custome2'] >= $new_prob1)
+{
+if($cgpa >=1.5 && $fail_cu ==15) continue;
+}
 
-//var_dump($ind_std['std_id']);
-	// these conditon is just to allow the student to pass. will be rectified.
-       if($ind_std['std_id'] == '29891')
-       {
-       }else{
-		if($cgpa >=1.00 && $cgpa <=1.49  || $fail_cu ==15) continue;
-		}
-
-		//var_dump($ind_std['std_id']);	
-		}
 		
 $c++;
 
@@ -1396,10 +1391,10 @@ echo '</tbody></table>';
 	<div class="st block">
 	<div><p class="a">No Of Students Registered</p> <p class="b">';
 	$std_register = get_count_numstd_reg( $d, $s, $l, $c_duration, $fos );
-	if($std_register <= 1 )
-	{
+	//if($std_register <= 1 )
+	//{
 echo $c;
-	}else{ echo $std_register; }
+	//}else{ echo $std_register; }
 	echo'</p></div>
 	<div><p class="a">No of Results Published</p> <p class="b">',$c,'</p></div>
 	</div>

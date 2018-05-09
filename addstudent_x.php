@@ -36,6 +36,10 @@ if( isset($_SESSION['failed'] ) ) {
 			case 1:
 				echo '<div class="info">Students Successfully Added</div>';
 			break;
+        case 2:
+        echo '<div class="info">students from entry year 2016/2017 session  can not be register here.
+        they are to register them self. you can only enter result on courses assigned to you.contact system Admin for more info</div>';
+      break;
 			default:
 			break;
 		}

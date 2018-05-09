@@ -13,6 +13,13 @@
   $spxx=$_GET['specialxx'];
   
   $spillcheck = substr($s_level, -1);
+
+  	if($yearsession >= "2016" && $s_level == 1 && $rtype != 0)
+	{
+header('HTTP/1.1 301 Moved Permanently');
+		header('Location:results_spreadsheetx.php?i=2');
+		exit('Not All Action Could Be Performed');	
+	}
   if($programme == 7)
 
   {

@@ -1,7 +1,7 @@
 <?php
 	require("inc/header.php");
 	include_once './config.php';
-	include_once './include_report.php';
+	//include_once './include_report.php';
 ?>
 
 <!-- content starts here -->
@@ -34,8 +34,23 @@ function checkform ( form )
 </script>
 <?php
 	unset($_SESSION['yearsession'], $_SESSION['s_semester']);
-?>
 
+if( isset($_GET['i']) ) {
+		switch( $_GET['i']) {
+			case 1:
+				echo '<div class="info">Students Successfully Added</div>';
+			break;
+        case 2:
+        echo '<div class="info">Result from entry year 2016/2017 session can not be generated here.
+        .contact system Admin for more info</div>';
+      break;
+			default:
+			break;
+		}
+	}
+
+?>
+	
 <form name="form" method="get" action="examreportx.php" target="_blank">
   <table width="40%" style="margin:0 auto" border="0" align="center" cellpadding="5" cellspacing="5">
     <tr>
@@ -112,7 +127,7 @@ function checkform ( form )
       <td><select name="course" id="field" onchange="return loadL(this.value, <?php echo $_SESSION['myprogramme_id'] ?>)">
       <option value="">--</option>
 		<?php
-			$fos = load_fos( $_SESSION['myusername'] );
+			$fos = load_fos($_SESSION['myusername']);
 			foreach( $fos as $r ) {
 				echo '<option value="',$r['do_id'],'">',$r['programme_option'],'</option>';
 			}

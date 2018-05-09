@@ -580,35 +580,65 @@ function fetch_student_mat( $d, $p, $l, $f, $s, $fos, $special = false, $duratio
 			case 'spillover':
 
 				$sql = 'SELECT DISTINCT sr.std_id, sp.matric_no, sr.level_id, sp.surname, sp.firstname, sp.othernames
-FROM students_reg as sr LEFT JOIN students_profile as sp ON sr.std_id = sp.std_id WHERE sr.department_id = sp.stddepartment_id && sr.yearsession="'.$s.'" && sr.programme_id='.$p.' && sr.faculty_id='.$f.' && sr.department_id='.$d.' && sr.level_id='.$l.' && sp.stdcourse = '.$fos.' ORDER BY sp.matric_no, sp.surname ASC';
+FROM students_reg as sr LEFT JOIN students_profile as sp  ON sr.std_id = sp.std_id WHERE sr.department_id = sp.stddepartment_id && sr.yearsession="'.$s.'" && sr.programme_id='.$p.' && sr.faculty_id='.$f.' && sr.department_id='.$d.' && sr.level_id='.$l.' && sp.stdcourse = '.$fos.' && sp.std_id NOT IN ( SELECT std_id FROM students_reg WHERE students_reg.yearsession = "'.($s-1).'" && students_reg.level_id = "'.$l.'" && students_reg.department_id = "'.$d.'" ) ORDER BY sp.matric_no, sp.surname ASC';
 
 			break;
 			case 'regular':
 			
 			$sql = 'SELECT DISTINCT sr.std_id, sp.matric_no, sr.level_id, sp.surname, sp.firstname, sp.othernames
-FROM students_reg as sr LEFT JOIN students_profile as sp ON sr.std_id = sp.std_id WHERE sr.department_id = sp.stddepartment_id && sr.yearsession="'.$s.'" && sr.programme_id='.$p.' && sr.faculty_id='.$f.' && sr.department_id='.$d.' && sr.level_id='.$duration.' && sp.stdcourse = '.$fos.' ORDER BY sp.matric_no, sp.surname ASC';	//echo $sql;		
+FROM students_reg as sr LEFT JOIN students_profile as sp ON sr.std_id = sp.std_id WHERE sr.department_id = sp.stddepartment_id && sr.yearsession="'.$s.'" && sr.programme_id='.$p.' && sr.faculty_id='.$f.' && sr.department_id='.$d.' && sr.level_id='.$duration.' && sp.stdcourse = '.$fos.' && sp.std_id NOT IN ( SELECT std_id FROM students_reg WHERE students_reg.yearsession = "'.($s-1).'" && students_reg.level_id = "'.$l.'" && students_reg.department_id = "'.$d.'" ) ORDER BY sp.matric_no, sp.surname ASC';	//echo $sql;		
 			break;
 			default:
 			$sql = 'SELECT DISTINCT sr.std_id, sp.matric_no, sr.level_id, sp.surname, sp.firstname, sp.othernames
-FROM students_reg as sr LEFT JOIN students_profile as sp ON sr.std_id = sp.std_id WHERE sr.department_id = sp.stddepartment_id && sr.yearsession="'.$s.'" && sr.programme_id='.$p.' && sr.faculty_id='.$f.' && sr.department_id='.$d.' && sr.level_id='.$l.' && sp.stdcourse = '.$fos.' ORDER BY sp.matric_no, sp.surname ASC';
+FROM students_reg as sr LEFT JOIN students_profile as sp  ON sr.std_id = sp.std_id WHERE sr.department_id = sp.stddepartment_id && sr.yearsession="'.$s.'" && sr.programme_id='.$p.' && sr.faculty_id='.$f.' && sr.department_id='.$d.' && sr.level_id='.$l.' && sp.stdcourse = '.$fos.' && sp.std_id NOT IN ( SELECT std_id FROM students_reg WHERE students_reg.yearsession = "'.($s-1).'" && students_reg.level_id = "'.$l.'" && students_reg.department_id = "'.$d.'" ) ORDER BY sp.matric_no, sp.surname ASC';
 		}
 	} 
 	else 
 	{
 
 				$sql = 'SELECT DISTINCT sr.std_id, sp.matric_no, sr.level_id, sp.surname, sp.firstname, sp.othernames
-FROM students_reg as sr LEFT JOIN students_profile as sp ON sr.std_id = sp.std_id WHERE sr.department_id = sp.stddepartment_id && sr.yearsession="'.$s.'" && sr.programme_id='.$p.' && sr.faculty_id='.$f.' && sr.department_id='.$d.' && sr.level_id='.$l.' && sp.stdcourse = '.$fos.' ORDER BY sp.matric_no, sp.surname ASC';
-//echo $sql;
+FROM students_reg as sr LEFT JOIN students_profile as sp ON sr.std_id = sp.std_id WHERE sr.department_id = sp.stddepartment_id && sr.yearsession="'.$s.'" && sr.programme_id='.$p.' && sr.faculty_id='.$f.' && sr.department_id='.$d.' && sr.level_id='.$l.' && sp.stdcourse = '.$fos.' && sp.std_id NOT IN ( SELECT std_id FROM students_reg WHERE students_reg.yearsession = "'.($s-1).'" && students_reg.level_id = "'.$l.'" && students_reg.department_id = "'.$d.'" ) ORDER BY sp.matric_no, sp.surname ASC';
+
 	}
-	
+
+
 
 	$result = array();
-	$r = mysqli_query($GLOBALS['connect'],  $sql ) or die('App Command Ended: No Students Found - ERROR'.mysql_error($GLOBALS['connect']));
+	$r = mysqli_query($GLOBALS['connect'],  $sql ) or die(mysqli_error($GLOBALS['connect']));
+		
 	while( $a = mysqli_fetch_assoc($r) ){
 		$result[] = $a;
 
 	}
-//var_dump($result);
+
+	mysqli_free_result($r);
+	unset($d,$p,$l,$c,$f,$r,$a);
+	if( empty($result) ) {
+		exit('Report Sheet: No Students Found');
+	}
+
+	$result = std_result_chker( $result, $s, $special, $duration );
+
+	return $result;
+		
+}
+
+function fetch_student_mat_delay( $d, $p, $l, $f, $s, $fos, $special = false, $duration ){
+	
+	
+
+				$sql = 'SELECT DISTINCT sr.std_id, sp.matric_no, sr.level_id, sp.surname, sp.firstname, sp.othernames
+FROM students_reg as sr LEFT JOIN students_profile as sp ON sr.std_id = sp.std_id WHERE sr.department_id = sp.stddepartment_id && sr.yearsession="'.$s.'" && sr.programme_id='.$p.' && sr.faculty_id='.$f.' && sr.department_id='.$d.' && sr.level_id='.$l.' && sp.stdcourse = '.$fos.' && sp.std_id  IN ( SELECT std_id FROM students_reg WHERE students_reg.yearsession = "'.($s-1).'" && students_reg.level_id = "'.$l.'" && students_reg.department_id = "'.$d.'" ) ORDER BY sp.matric_no, sp.surname ASC';
+
+
+	$result = array();
+	$r = mysqli_query($GLOBALS['connect'],  $sql ) or die(mysqli_error($GLOBALS['connect']));
+		
+	while( $a = mysqli_fetch_assoc($r) ){
+		$result[] = $a;
+
+	}
+
 	mysqli_free_result($r);
 	unset($d,$p,$l,$c,$f,$r,$a);
 	if( empty($result) ) {
@@ -617,10 +647,9 @@ FROM students_reg as sr LEFT JOIN students_profile as sp ON sr.std_id = sp.std_i
 
 	$result = std_result_chker( $result, $s, $special, $duration );
 	return $result;
-	//var_dump($result);
+	
 	
 }
-
 
 function fetch_student_mat_welcome( $d, $p, $l, $f, $s, $fos, $special = false, $duration ){
 	
@@ -783,7 +812,7 @@ WHERE `course_reg`.std_id = `students_results`.std_id
 
 
 
-//==================================================+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//============================================+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -810,6 +839,7 @@ function get_course_to_take($p, $f, $d, $l, $s, $s_id){
 function get_course_to_take_verREMARK($p, $f, $d, $l, $s, $s_id, $fos, $new=false){
 	$result = '';
 	$fetch = get_fake_carry_courses_loader_verREMARK($l, $s, $p, $f, $d, $s_id, $fos, $new);
+
 	if( !empty($fetch) ){
 		foreach($fetch as $f){
 			$result .= substr_replace($f,' ',3, 0).',';
@@ -887,6 +917,7 @@ else if($vacation == "VACATION")
 	$vacation="NORMAL";
 	$li=$l;
 }
+$lower_session = lower_session_IT($s_id,$l);
 // trying to resolve issuess
 $sql = 'SELECT course_code, course_unit FROM all_courses WHERE all_courses.level_id = '.$li.' &&
 	all_courses.course_semester in ("first semester","second semester") &&
@@ -894,7 +925,7 @@ $sql = 'SELECT course_code, course_unit FROM all_courses WHERE all_courses.level
 	all_courses.faculty_id = '.$f.' &&
 	all_courses.department_id = '.$d.' &&
 	all_courses.course_status = "C" &&
-	all_courses.course_custom5 = "'.$adc.'" &&
+	all_courses.course_custom5 IN ("'.$lower_session.'") &&
 	all_courses.course_custom2 = '.$fos.' && thecourse_id NOT IN ( SELECT `course_reg`.thecourse_id FROM course_reg WHERE `course_reg`.std_id = '.$s_id.' && `course_reg`.cyearsession IN ("'.$adc.'") && course_season = "'.$vacation.'" ) && 
 	thecourse_id NOT IN ( SELECT stdcourse_id FROM students_results WHERE std_id ='.$s_id.' && std_mark_custom2 < "'.$s.'" )'; 
 
@@ -1647,7 +1678,7 @@ $new_prob=new_Probtion($l,$s_id,$s,$cgpa);
 	$take = get_course_to_take_verREMARK($p, $f, $d, $l, $s, $s_id, $fos, $new);
 	$repeat = get_repeat_courses_reloaded($l, $s, $s_id, $d, $fos);
 	$repeat1 = get_repeat_courses_reloaded1($l, $s, $s_id, $d, $fos);
-	
+
 	if( !empty( $repeat1 ) ) 
 	{
 		
@@ -1657,7 +1688,7 @@ $new_prob=new_Probtion($l,$s_id,$s,$cgpa);
 			if( $rep1['num_'] == 3 )
 			{
 				
-				//$carryf .= substr_replace($rep1['code'],' ',3, 0).',';
+			//	$carryf .= substr_replace($rep1['code'],' ',3, 0).',';
 			}
 			else
 			{
@@ -1727,7 +1758,7 @@ $new_prob=new_Probtion($l,$s_id,$s,$cgpa);
 			return $cgpa > 0.99 ? "PASS": '';
 		}
 		else if( !empty($take) )
-		$return .= !empty($return) ? " <br/> TAKE ".$take : "TAKE ".$take;
+		$return .= !empty($return) ? " <br/> TAKE ".$take." </br> ".$carryf: "TAKE ".$take;
 		
 	unset( $sql, $l, $s, $s_id, $cgpa, $take, $a );
 	return strtoupper($return);
@@ -1776,13 +1807,84 @@ function get_remarks_verCORR($p, $f, $d, $l, $s, $s_id, $cgpa, $fos ){
 	return $return;
 
 }
+function lower_session_IT($s_id,$l)
+{
+	$l3 =$l-1;
+	$a = mysqli_query($GLOBALS['connect'],  'SELECT DISTINCT  ysession FROM `registered_semester` WHERE `registered_semester`.std_id = "'.$s_id.'" && sem IN ("First Semester","Second Semester") && rslevelid = '.$l3.' ') or die(mysqli_error($GLOBALS['connect']));
+	if( mysqli_num_rows($a)>0 ) {
+	while( $aa = mysqli_fetch_assoc($a) ) {
+			$c[] = $aa['ysession'];
+		}
+	
+	}
+	return $lower_session =implode(',',$c);
+
+}
+function get_fake_carry_courses_loader_IT($l, $s, $p, $f, $d, $s_id, $fos, $vacation = 'NORMAL'){
+
+	$sess_count_used = get_count_session_used( $s_id, $l );
+	// get number os sesion used in previous year
+	
+$lower_session = lower_session_IT($s_id,$l);
+	
+	#reason this gets the exact number of registration year this std has done = exact number of years used in school! so -1 to allow math work perfectly
+	$sess_count_used = $sess_count_used-1; 
+	$probation = probation_exists_session( $s_id,$s );
+	//if( $l == 2 )
+		//$adv__ = 1; #reason: carryover is to show previous year carryover course and cos l == 2 prv year is automagically 1
+		#$adv__ = implode( ',', range( ($l-1), $l ) );
+	
+		$sl = $l - 1;
+		$adv__ = implode( ',', range( ($l-$sl), ($l-1) ) ); #reason of ($l-1) to loop upto previous study year - unical style of exams report
+	
+		
+
+		$adv_ = range( ($s-$sess_count_used), ($s-1) ); #reason: jst like ($l-1) above,loop upto previous year of study only in real years e.g(2001)
+
+		
+		
+
+	$adv_ = implode( ',', $adv_ );
 
 
+	//displays carryover only if course result exists in current year else hides course
 
-function get_carryover_courses($l, $s, $p, $f, $d, $s_id, $fos, $period = "NORMAL"){
+
+	$adc=$adv_;
+
+	$li=($l-1);
+
+
+// trying to resolve issuess
+$sql = 'SELECT course_code, course_unit FROM all_courses WHERE all_courses.level_id = '.$li.' &&
+	all_courses.course_semester in ("first semester","second semester") &&
+	all_courses.programme_id = '.$p.' &&
+	all_courses.faculty_id = '.$f.' &&
+	all_courses.department_id = '.$d.' &&
+	all_courses.course_status = "C" &&
+	all_courses.course_custom5 IN ("'.$lower_session.'") &&
+	all_courses.course_custom2 = '.$fos.' && thecourse_id NOT IN ( SELECT `course_reg`.thecourse_id FROM course_reg WHERE `course_reg`.std_id = '.$s_id.' && `course_reg`.cyearsession IN ("'.$adc.'") && course_season = "'.$vacation.'" ) && 
+	thecourse_id NOT IN ( SELECT stdcourse_id FROM students_results WHERE std_id ='.$s_id.' && std_mark_custom2 < "'.$s.'" )'; 
+
+
+	$r = mysqli_query($GLOBALS['connect'],  $sql ) or die( "<a href=\"snd_msg.php?m=".mysqli_error($GLOBALS['connect'])."\" style=\"color:#039; font-weight:700; font-family:'Lucida Console', Monaco, monospace\">Please ( R e p o r t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E r r o r )</a>");
+	if( mysqli_num_rows($r) > 0 ){
+		$result = array();
+		while( $a = mysqli_fetch_assoc($r) ) {
+			$result[] = $a['course_code'];//."&nbsp;($a[course_unit])";
+		}
+		return $result;
+	} else{
+		return 0;
+	}
+	
+}
+function get_carryover_courses_IT($l, $s, $p, $f, $d, $s_id, $fos, $period = "NORMAL"){
 	$fac = $f; //for faculty of agric: my code
 	$take = '';
-	$fetch = get_fake_carry_courses_loader($l, $s, $p, $f, $d, $s_id, $fos, $period);
+	$fetch = get_fake_carry_courses_loader_IT($l, $s, $p, $f, $d, $s_id, $fos, $period);
+	
+
 
 	if( !empty( $fetch ) ) 
 	{
@@ -1791,6 +1893,29 @@ function get_carryover_courses($l, $s, $p, $f, $d, $s_id, $fos, $period = "NORMA
 		foreach($fetch as $f)
 		{
 			echo  strtoupper(substr_replace($f,' ',3, 0)),'<br/>';
+
+		}
+	
+	}
+
+	
+}
+
+
+function get_carryover_courses($l, $s, $p, $f, $d, $s_id, $fos, $period = "NORMAL"){
+	$fac = $f; //for faculty of agric: my code
+	$take = '';
+	$fetch = get_fake_carry_courses_loader($l, $s, $p, $f, $d, $s_id, $fos, $period);
+
+
+	if( !empty( $fetch ) ) 
+	{
+		//  it is to hide some courses with diffent id but are the same courses
+		
+		foreach($fetch as $f)
+		{
+			echo  strtoupper(substr_replace($f,' ',3, 0)),'<br/>';
+
 		}
 	
 	}
@@ -2414,7 +2539,7 @@ $return = '';
 		$b=array();
 		$c=array();
 		
-		$sql2 = 'SELECT `students_results`.stdcourse_id FROM `students_results` WHERE `students_results`.std_grade NOT IN ("N","F") && `students_results`.std_mark_custom2 <="'.($s1).'" && `students_results`.std_id = '.$s_id.' && period="NORMAL" ORDER BY NULL';
+		$sql2 = 'SELECT `students_results`.stdcourse_id FROM `students_results` WHERE `students_results`.std_grade NOT IN ("N","F") && `students_results`.std_mark_custom2 <="'.($s1).'" && `students_results`.std_id = '.$s_id.' && period IN ("NORMAL","VACATION") ORDER BY NULL';
 		
 		
 		$r = mysqli_query( $GLOBALS['connect'], $sql2);
@@ -2831,7 +2956,8 @@ if( true === $vacation )
 				$inc[ $a['stdcourse_id'] ] = array( 'sizem'=>1, 'code'=>$a['stdcourse_custom2'], 'level'=>$a['clevel_id'] );
 			}
 
-		endforeach;		
+		endforeach;	
+
 		}
 		
 		
@@ -3275,7 +3401,75 @@ $s1 =substr_replace($s,$cc,0,4);
 }else{
 	$s1 =$s-1;
 }
+	
+		$sql2 = 'SELECT `students_results`.stdcourse_id FROM `students_results` WHERE `students_results`.std_grade in( "F","N") && `students_results`.std_mark >= 0 && `students_results`.std_mark_custom2 <= "'.($s1).'" && `students_results`.std_id = '.$s_id.'';
 		
+		if( true === $vacation ) {
+			// Change Of Query
+			$sql2 = 'SELECT `students_results`.stdcourse_id FROM `students_results` WHERE `students_results`.std_grade = "F" && `students_results`.std_mark >= 0 && `students_results`.std_mark_custom2 ="'.$s.'" && `students_results`.std_id = '.$s_id.' && period = "NORMAL"';
+		}
+
+		$run = mysqli_query( $GLOBALS['connect'], $sql2 );
+		if( 0!=mysqli_num_rows($run) ) {
+			$c = array();
+			while( $d=mysqli_fetch_assoc($run) ) {
+				$c[] = $d['stdcourse_id'];
+			}
+			
+			mysqli_free_result($run);
+		
+			foreach( $total as $k=>$v ) {
+				if(!in_array($v['stdcourse_id'], $c)) {			
+					unset($total[$k]);
+				}
+			}		
+			
+			foreach( $total as $k=>$g ) {
+				$sem = $g['std_mark_custom1'] == 'First Semester' ? 1 : 2;
+				$return[] = $sem.' '.$g['stdcourse_custom2'];
+			}
+
+			unset($a,$b,$c);
+			
+		}
+		
+	}
+	return $return;
+
+}
+
+
+function get_repeatresult_repeat_probation( $l, $s, $s_id, $vacation = false ) {
+
+	$sql = 'SELECT `students_results`.stdcourse_id, `students_results`.std_grade, `students_results`.std_mark_custom1, `course_reg`.c_unit, `course_reg`.cyearsession, `course_reg`.stdcourse_custom2 FROM students_results, course_reg WHERE 
+	`students_results`.std_id = `course_reg`.std_id &&
+	`students_results`.std_mark_custom2 = `course_reg`.cyearsession &&
+	`students_results`.stdcourse_id = `course_reg`.thecourse_id &&
+	`students_results`.std_mark_custom2 = "'.($s).'" && `students_results`.std_id = '.$s_id.' Order by `course_reg`.cyearsession DESC';
+	
+		
+				
+	$return = array();
+	$run = mysqli_query($GLOBALS['connect'],  $sql );
+	if( mysqli_num_rows($run)>0 ) {
+		
+		//first while
+		$total = array();
+		while( $data = mysqli_fetch_assoc($run) )
+			$total[] = $data;
+		
+		mysqli_free_result($run);
+		
+		$c = array();	
+
+	if( $_SESSION['myprogramme_id'] == 7 ) {
+	 $cc=strtok($s,"-");
+$cc =$cc;
+$s1 =substr_replace($s,$cc,0,4);
+}else{
+	$s1 =$s;
+}
+	
 		$sql2 = 'SELECT `students_results`.stdcourse_id FROM `students_results` WHERE `students_results`.std_grade in( "F","N") && `students_results`.std_mark >= 0 && `students_results`.std_mark_custom2 <= "'.($s1).'" && `students_results`.std_id = '.$s_id.'';
 		
 		if( true === $vacation ) {
@@ -3728,10 +3922,7 @@ function get_fake_chr_resit( $sem, $rpt_list, $carryov_list, $s, $std ) {
 
 function fetch_electives_corr($std_id, $s, $l, $sem, $season="'NORMAL'" ) {
 	$sem = ($sem == 1) ? "'First Semester'" : "'Second Semester'";
-	/*$sql = "Select stdresult_id, std_grade, cu From students_results LEFT JOIN course_reg ON (stdcourse_id=thecourse_id) 
-	Where std_id=$stdid 
-	&& stdcourse_id IN (Select thecourse_id From course_reg Where stdcourse_custom3 = 'E' && std_id = $std_id && csemester=$sem && cyearsession=$s && course_season=$season) 
-	&& std_mark_custom2=$s && level_id=$l && period='$season'";*/
+	
 	
 	$sql = "Select cr.*, ac.thecourse_code, ac.thecourse_title From course_reg cr LEFT JOIN courses ac ON (cr.thecourse_id = ac.thecourse_id)
 	WHERE cr.std_id = $std_id && cr.stdcourse_custom3 = 'E' && cr.csemester=$sem && cr.cyearsession='".$s."' && cr.course_season=$season && cr.thecourse_id IN (Select thecourse_id From all_courses Where course_status = 'E' && level_id=$l && course_custom5='".$s."' && course_semester=$sem)";
@@ -3761,7 +3952,9 @@ function fetch_electives_corr($std_id, $s, $l, $sem, $season="'NORMAL'" ) {
 						$elec .= $r['c_unit'].' '.substr_replace($r['thecourse_code'], ' ',3,0).' '.$grade."<br/>";
 						
 					}else{
+						if ($grade_real!=NULL && $grade_real!=''){
 						$elec .= $r['c_unit'].' '.substr_replace($r['thecourse_code'], ' ',3,0).' '.$grade_real."<br/>";
+					}
 					}
 				}
 				
@@ -3794,7 +3987,7 @@ function get_remarks_corr($p, $f, $d, $l, $s, $s_id, $cgpa, $fos, $finalyear = f
 }
  $return = '';
 	$carryf = '';
-	$take = get_course_to_take_verREMARK($p, $f, $d, $l, $s, $s_id, $fos);
+	$take = get_course_to_take_verREMARK($p, $f, $d, $l, $s, $s_id, $fos,true);
 
 	$repeat = get_repeat_courses_reloaded_corr($l, $s, $s_id, $d, $fos);
 	$repeat1 = get_repeat_courses_reloaded1_corr($l, $s, $s_id, $d, $fos);
@@ -3809,15 +4002,15 @@ function get_remarks_corr($p, $f, $d, $l, $s, $s_id, $cgpa, $fos, $finalyear = f
 			if( $rep1['num_'] == 3 )
 			{
 				
-				//$carryf .= substr_replace($rep1['code'],' ',3, 0).',';
+				$carryf .= substr_replace($rep1['code'],' ',3, 0).',';
 			}
-			else
+			elseif($rep['num_'] < 3)
 			{
 				$return .= substr_replace($rep1['code'],' ',3 ,0).',';
 			}
 		}
 		
-		//$carryf = empty($carryf) ? '' : 'CARRY F '.$carryf." <br/>";
+		$carryf = empty($carryf) ? '' : 'CARRY F '.$carryf." <br/>";
 		$return = empty($return) ? '' : 'RPT '.$return;
 		//var_dump($return);
 		
@@ -3837,12 +4030,12 @@ function get_remarks_corr($p, $f, $d, $l, $s, $s_id, $cgpa, $fos, $finalyear = f
 			if( $rep['num_'] == 3 )
 			{
 				
-				$carryf .= substr_replace($rep['code'],' ',3, 0).',';
+				//$carryf .= substr_replace($rep['code'],' ',3, 0).',';
 
 			}
-			else
+			elseif($rep['num_'] < 3)
 			{
-				$return .= substr_replace($rep['code'],' ',3, 0).',';
+				//$return .= substr_replace($rep['code'],' ',3, 0).',';
 			}
 		
 		}
@@ -3853,7 +4046,7 @@ function get_remarks_corr($p, $f, $d, $l, $s, $s_id, $cgpa, $fos, $finalyear = f
 		//var_dump($return);
 					
 	}
-	echo $carryf.":";		
+	//echo $carryf.":";		
 		if(( $cgpa > 9.99 ) && $finalyear == true ) 
 		{
 			$return = "PASS <br/>".$carryf;
@@ -3939,13 +4132,18 @@ function get_repeat_courses_reloaded1_corr($l, $s, $s_id, $dept, $fos) {
 			}
 			
 			if( isset( $inc[ $a['stdcourse_id'] ] ) ) {
+			
+				//var_dump($inc[ $a['stdcourse_id'] ]['level'] );
 				if( $a['clevel_id'] == $inc[ $a['stdcourse_id'] ]['level'] ) {}
 				elseif( strtolower(substr($a['stdcourse_custom2'],0,3)) == 'gss' ){} # no need to check gss.. cos no carry F for them
 				else {
-					$inc1[ $a['stdcourse_id'] ]['num_']++;
-					$inc1[ $a['stdcourse_id'] ]['level'] = $a['clevel_id'];
-					$inc1[ $a['stdcourse_id'] ]['std_grade'] = $a['std_grade'];
+					$inc[ $a['stdcourse_id'] ]['num_']++;
+					$inc[ $a['stdcourse_id'] ]['level'] = $a['clevel_id'];
+					$inc[ $a['stdcourse_id'] ]['std_grade'] = $a['std_grade'];
+					
+
 				}
+				
 			}
 
 		endwhile;
@@ -4520,17 +4718,11 @@ function get_remarks_verPROBATION($s, $s_id, $l,  $d, $cgpa, $p, $fos){
 
 	function get_remarks_verPROBATION22($s, $s_id, $l,  $d, $cgpa, $p, $fos){
 	
-	$entry_year =get_entry_sesssion($s_id);
-if($entry_year['std_custome2'] >= 2012){
-if( $cgpa < 1.5 )
-return 'WITHDRAW';
-}else{
-	
-	if($cgpa < 0.75)
-	return 'WITHDRAW';
-	if( $cgpa <=1.00 && $cgpa > 0.74 )
-		return 'WITHDRAW OR CHANGE PROGRAMME';
-}
+$new_prob=new_Probtion_4_probation_result($s_id,$cgpa);
+//$new_prob=new_Probtion($l, $std_id,$s,$cgpa);
+	if($new_prob==true){
+		
+	return $new_prob;}
 		
 	$return = '';
 	$repeat = prob_get_repeat_failed_courses($l, $s, $s_id, $d,$fos);
@@ -5169,8 +5361,11 @@ function probation_fetch_electives($std_id, $s, $l, $sem, $season="'NORMAL'" ) {
 				we now need to check if the course has been a core course before his registration
 				
 			*/
-			$q = mysqli_query( $GLOBALS['connect'], "Select thecourse_id From all_courses Where thecourse_id = " .$r['thecourse_id']. "  && level_id < $l" );
-			//echo $sql;
+
+			$q = mysqli_query( $GLOBALS['connect'], "Select thecourse_id From all_courses Where thecourse_id = " .$r['thecourse_id']. " && course_status = 'C' && level_id < $l" );
+
+			/*$q = mysqli_query( $GLOBALS['connect'], "Select thecourse_id From all_courses Where thecourse_id = " .$r['thecourse_id']. "  && level_id < $l" );*/
+		
 			if (0==mysqli_num_rows($q)) { //if not found as C, the its E, compile
 		
 				// ignore all courses registered by student in previous sessions
@@ -5212,6 +5407,7 @@ function fetch_electives($std_id, $s, $l, $sem, $season="'NORMAL'" ) {
 				we now need to check if the course has been a core course before his registration
 				
 			*/
+
 			$q = mysqli_query( $GLOBALS['connect'], "Select thecourse_id From all_courses Where thecourse_id = " .$r['thecourse_id']. " && course_status = 'C' && level_id < $l" );
 			//echo $sql;
 			if (0==mysqli_num_rows($q)) { //if not found as C, the its E, compile
@@ -5310,7 +5506,9 @@ function get_count_numstd_reg( $d, $s, $l, $duration, $fos, $vacation = false ) 
 		$plus = ' && `students_profile`.std_id IN ( SELECT `students_reg`.std_id FROM students_reg WHERE yearsession IN ('.implode( ',', range($s-$calc, ($s-1)) ).') && `students_reg`.level_id = '.$l2.' )';
 	} 
 	
-$castle = mysqli_query($GLOBALS['connect'], 'SELECT COUNT(DISTINCT(students_reg.std_id)) AS size FROM students_reg  INNER JOIN students_profile ON students_reg.std_id = students_profile.std_id AND students_reg.department_id =students_profile.stddepartment_id WHERE department_id = '.$d.' && yearsession="'.$s.'" && level_id = '.$l.' && students_profile.stdcourse = '.$fos.' && season="NORMAL"');//.$vacation.$plus);
+$castle = mysqli_query($GLOBALS['connect'], 'SELECT students_profile.std_id, COUNT(DISTINCT(students_reg.std_id)) AS size FROM students_reg  INNER JOIN students_profile ON students_reg.std_id = students_profile.std_id AND students_reg.department_id =students_profile.stddepartment_id WHERE department_id = '.$d.' && yearsession="'.$s.'" && level_id = '.$l.' && students_profile.stdcourse = '.$fos.' && season="NORMAL"
+&& students_profile.std_id NOT IN ( SELECT std_id FROM students_reg WHERE students_reg.yearsession = "'.($s-1).'" && students_reg.level_id = "'.$l.'" && students_reg.department_id = "'.$d.'" )'
+);//.$vacation.$plus);
 
 	
 				
@@ -5795,7 +5993,7 @@ function test_result($stdid, $l, $s, $type) {
 				}// echo 'me';//$query;
 				//$matno = $ccurow['matric_no'];
 		
-		// ==========================================================
+		
 		//============ second module for drop courses
 		$fos = std_course( $stdid ); $take = '';
 		$sql = 'Select course_code, course_unit From all_courses Where course_custom2 = '.$fos.' && level_id='.$l.' && course_custom5='.$s.' && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id='.$l.' && std_mark_custom2='.$s.' && period="NORMAL" )';//&& period="NORMAL"
@@ -5913,17 +6111,17 @@ if($_SESSION['myprogramme_id'] == 7)
 	{
 		$apend ="-AP";
 		 $new_prob ="2012".$apend;
-		 $new_prob_2 ="2014".$apend;
+		// $new_prob_2 ="2014".$apend;
 	}elseif($entry_year['std_custome6'] =="August") {
 		 $apend ="-AG";
 		  $new_prob ="2012".$apend;
-		  $new_prob_2 ="2012".$apend;
+		//  $new_prob_2 ="2012".$apend;
 	}
 	
                
 }else{
 	$new_prob =2012;
-	$new_prob_2 =2014;
+	//$new_prob_2 =2014;
 }
 	
 	if($entry_year['std_custome2'] < $new_prob)
@@ -5935,7 +6133,7 @@ if($_SESSION['myprogramme_id'] == 7)
 	}elseif(( $cgpa >= 0.75) && ($cgpa <= 0.99) ){
 	$return =	 'PROBATION';
 	}
-	}elseif($entry_year['std_custome2'] == $new_prob || $entry_year['std_custome2'] < $new_prob_2){
+	}else{
 
 
         if($fail_cu > 15|| $cgpa >=0.00 && $cgpa <=0.99 ){
@@ -5948,20 +6146,6 @@ if($_SESSION['myprogramme_id'] == 7)
 
 		}elseif( $cgpa > 1.49 && $cgpa <=1.5 && $fail_cu ==15 ){
 		$return = 'WITHDRAW OR CHANGE PROGRAMME';
-		} 
-		}else{
-
-
-        if($fail_cu == 15 && $cgpa < 1.5 ){
-			
-		$return = 'WITHDRAW OR CHANGE PROGRAMME';
-		}
-		elseif($cgpa >=1.5 && $fail_cu ==15){
-
-			$return = 'PROBATION';
-
-		}elseif( $fail_cu > 15 ){
-		$return = 'WITHDRAW';
 		} 
 		}
 		return $return;
@@ -5977,17 +6161,17 @@ if($_SESSION['myprogramme_id'] == 7)
 	{
 		$apend ="-AP";
 		 $new_prob ="2012".$apend;
-		  $new_prob_2 ="2014".$apend;
+		 // $new_prob_2 ="2014".$apend;
 	}elseif($entry_year['std_custome6'] =="August") {
 		 $apend ="-AG";
 		  $new_prob ="2012".$apend;
-		   $new_prob_2 ="2014".$apend;
+		  //$new_prob_2 ="2014".$apend;
 	}
 	
                
 }else{
 	$new_prob =2012;
-	$new_prob_2 =2014;
+	//$new_prob_2 =2014;
 }
 	
 	if($entry_year['std_custome2'] < $new_prob)
@@ -5999,7 +6183,7 @@ if($_SESSION['myprogramme_id'] == 7)
 	}elseif(( $cgpa >= 0.75) && ($cgpa <= 0.99) ){
 	$return =	 'PROBATION';
 	}
-	}elseif($entry_year['std_custome2'] == $new_prob || $entry_year['std_custome2'] < $new_prob_2){
+	}else{
 
 
         if($fail_cu > 15 || $cgpa >=0.00 && $cgpa <=0.99 ){
@@ -6014,24 +6198,26 @@ if($_SESSION['myprogramme_id'] == 7)
 		$return = 'WITHDRAW OR CHANGE PROGRAMME';
 		} 
 		}
-		else{
-
-
-        if($fail_cu == 15 && $cgpa < 1.5 ){
-			
-		$return = 'WITHDRAW OR CHANGE PROGRAMME';
-		}
-		elseif($cgpa >=1.5 && $fail_cu ==15){
-
-			$return = 'PROBATION';
-
-		}elseif( $fail_cu > 15 ){
-		$return = 'WITHDRAW';
-		} 
-		}
+	
 		return $return;
 }
 
+// ========new probation condition for probation result ==========
+
+function new_Probtion_4_probation_result($s_id,$cgpa){
+	$entry_year =get_entry_sesssion($s_id);
+if($entry_year['std_custome2'] >= 2012){
+if( $cgpa < 1.5 )
+$return = 'WITHDRAW';
+}else{
+	
+	if($cgpa < 0.75)
+	$return = 'WITHDRAW';
+	if( $cgpa <=1.00 && $cgpa > 0.74 )
+		$return = 'WITHDRAW OR CHANGE PROGRAMME';
+}
+return $return;
+}
 
 function get_fail_crunit($l,$s_id,$s){
   $sql = "SELECT cu FROM students_results WHERE level_id ='$l' && std_mark_custom2 ='".$s."' && std_id ='$s_id' && std_grade ='F'";
@@ -6216,8 +6402,12 @@ function result_check_pass($l, $std_id, $s, $cgpa,$take_ignore=false, $taketype=
 		
 	return $new_prob;}
 	
-		
+
 	$sql = 'Select COUNT(*) as c, stdcourse_id, cu From students_results Where std_id='.$std_id.' && level_id <='.$l.' && std_mark_custom2 <='.$s.' && std_grade IN ("F") GROUP BY stdcourse_id';
+	
+	
+		
+
 	$r = mysqli_query($GLOBALS['connect'],$sql);
 	if (mysqli_num_rows($r)!=0){ // found failed courses in the level
 		while ($row = mysqli_fetch_assoc($r))
@@ -6239,11 +6429,16 @@ function result_check_pass($l, $std_id, $s, $cgpa,$take_ignore=false, $taketype=
 				$type = substr($rowc['stdcourse_custom2'],0,3); // GSSS
 				$n = $row['c'];
 				if ($n >= 3){
+				if($taketype == "vac")
+				{
+					
+				}else{
 					if ($type != 'GSS'){ //($type == 'C'){
 						if (ignore_carryF ( $std_id, $row['stdcourse_id'], $s ) == '') $carryf .= ', '.$code;
 					} else {
 						$rept .= ', '.$code;
 					}
+				}
 				} else if ($n < 3) {
 					$rept .= ', '.$code;
 				}
@@ -6491,7 +6686,9 @@ $r = mysqli_query($GLOBALS['connect'],$sql);
 
 function result_check_pass_2_probation($l, $std_id, $s, $cgpa)
 {	$fail=''; $pass='';$c=0;// echo '['.$s.']';
-$new_prob=new_Probtion($l, $std_id,$s,$cgpa);
+$new_prob=new_Probtion_4_probation_result($std_id,$cgpa);
+
+//$new_prob=new_Probtion($l, $std_id,$s,$cgpa);
 	if($new_prob==true){
 		
 	return $new_prob;}
@@ -6623,7 +6820,7 @@ $new_prob=new_Probtion($l, $std_id,$s,$cgpa);
 	}
 	//$fail = $fail != '' ? 'RPT '.substr($fail,2): 'PASS';
 	$take = take_courses($std_id, $l, $s);
-	//var_dump($take);
+	
 	$carryf = $carryf != '' ? 'CARRY F '.substr($carryf,2)."<br>" : '';
 	$rept = $rept != '' ? 'RPT '. substr($rept,2) : '';
 	$rept = $take != '' ? 'TAKE '. $take ."<br>".$rept : $rept;
@@ -6740,7 +6937,7 @@ $sql = 'Select course_code From all_courses Where course_custom2 = '.$fos.' && l
 function mid_year_carryover_courses($fos,$l,$s,$stdid)
 
 {
-	$sql = 'Select course_code From all_courses Where course_custom2 = '.$fos.' && level_id='.$l.' && course_custom5='.$s.'  && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id='.$l.' && (std_mark_custom2='.$s.') && period="NORMAL" )';// && thecourse_id IN ( Select thecourse_id From course_reg Where std_id='.$stdid.' && clevel_id='.$l.' && cyearsession='.$s3.' && stdcourse_custom3 = "C") && thecourse_id IN (Select thecourse_id From courses Where levels='.$l.')';
+	$sql = 'Select course_code From all_courses Where course_custom2 = '.$fos.' && level_id='.$l.' && course_custom5='.$s.'  && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id='.$l.' && (std_mark_custom2<='.$s.') && period="NORMAL" )';// && thecourse_id IN ( Select thecourse_id From course_reg Where std_id='.$stdid.' && clevel_id='.$l.' && cyearsession='.$s3.' && stdcourse_custom3 = "C") && thecourse_id IN (Select thecourse_id From courses Where levels='.$l.')';
 
 		$q = mysqli_query($GLOBALS['connect'], $sql );
 		//$take = '';
@@ -6831,7 +7028,8 @@ $sql = 'Select course_code From all_courses Where course_custom2 = '.$fos.' && l
 			}
 			
 		}
-		//var_dump($take);
+		
+		//echo"<br/>";
 		//-------------------------
 		
 		// --------------- TAKE FOR ELECTIVE COURSES
@@ -6850,7 +7048,7 @@ $sql = 'Select course_code From all_courses Where course_custom2 = '.$fos.' && l
 				$take.= ', '.substr($r['course_code'],0,3).' '.substr($r['course_code'],3,4);
 			}
 		}
-	
+	//var_dump($take);
 		//-------------------------
 	}
 	//var_dump($take1);
@@ -6869,13 +7067,13 @@ function take_courses_IT($stdid, $l, $s,$p, $f, $d, $taketype='')
 		//$carryover = get_carryover_courses($l, $s, $p, $f, $d, $stdid, $fos);
 		
  //if($carryover !== null){
+$ss = lower_session_IT($stdid,$l);
 
-
-       $ss=$s-1;
+   
        $ll=$l-1;
 
 		
-       $sql = 'Select * From all_courses Where course_custom2 = '.$fos.' && level_id='.$ll.' && course_custom5="'.$ss.'" && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id<='.$l.' && std_mark_custom2<="'.$s.'")';
+       $sql = 'Select * From all_courses Where course_custom2 = '.$fos.' && level_id='.$ll.' && course_custom5 IN ("'.$ss.'") && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id<='.$l.' && std_mark_custom2<="'.$s.'")';
 	
 	
 

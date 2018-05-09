@@ -21,7 +21,7 @@
 	$d = (int)$_GET['department_id'];
 	$l = (int)$_GET['s_level'];
 	$f = (int)$_GET['faculty_id'];
-	$s = (int)$_GET['yearsession'];
+	$s = (int)$_GET['s_session'];
 	$fos = (int)$_GET['course'];
 	$c_duration = get_course_duration( $fos );
 	$p = empty($_GET['programme']) ? 2 : $_GET['programme'];	
@@ -54,7 +54,7 @@
 		$set['rpt'] = array(0=>'', 1=>'', 2=>'');
 		$set['carry'] = array(0=>'', 1=>'', 2=>'');
 		//$set['cpga'] = array(0=>'', 1=>'', 2=>'');
-		$set['cpga'] = array(0=>'<th>CGPA</th>', 1=>'<th></th>', 2=>'<th class="tB"></th>');
+		$set['cpga'] = array(0=>'', 1=>'', 2=>'');
 		$set['chr'] = array(1=>'', 2=>'');
 		$set['plus'] = 0;
 		$set['wrong_fix'] = '<p style=" text-align:right;">CH</p>';
@@ -394,7 +394,7 @@ foreach( $std_off_list as $ind_std ) {
 				
 				$ignore = substr($remark,0,4) == 'PASS' ? false : true;
 				
-				if( $l > 1 )
+				if( $l > 11 )
 					echo '<td class="B">',$cgpa,'</td>';
 			 	
 				#class of degree section

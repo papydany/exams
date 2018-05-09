@@ -22,9 +22,9 @@
 	$s = (int)$_POST['s_session'];
     $fos = (int)$_POST['course'];
 	$c_duration = get_course_duration( $fos );
-	$p = empty($_GET['programme']) ? 2 : $_GET['programme'];
-	$month = $_GET['month'];
-	$special = isset( $_GET['special'] ) ? $_GET['special'] : false; 
+	$p = empty($_POST['programme']) ? 2 : $_POST['programme'];
+	$month = $_POST['month'];
+	$special = isset( $_POST['special'] ) ? $_POST['special'] : false; 
 
 	$level_reps = get_levelreps();
 

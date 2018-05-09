@@ -62,7 +62,6 @@
 		
 		$mydate = date("Y-m-d");
 
-	
 /*	$queryfac = "SELECT departments_id,departments_name,departments.fac_id,r_publish.rp_level,r_publish.rp_session,r_publish.rp_semester,departments.fac_id
 FROM departments,r_publish
 WHERE departments.departments_id = r_publish.rp_departmentid

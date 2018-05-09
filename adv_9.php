@@ -83,7 +83,7 @@ $list_std[]=$value;
 }
 
 }
-var_dump($list_std);
+//var_dump($list_std);
 
 //exit();
 		//mysqli_query( $GLOBALS['connect'], 'SELECT course_id FROM `all_courses` WHERE thecourse_id NOT IN ( SELECT thecourse_id FROM course_reg ) && `level_id` = '.$n_lv.' && `course_custom2` = '.$fos.' && `course_custom5` = "'.$n_sess.'"');

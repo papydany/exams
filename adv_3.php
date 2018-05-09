@@ -21,10 +21,12 @@ $month = $_POST['month'];
 $n_sess = $_POST['n_sess'].$apend;
 	$c_sess = $_POST['c_sess'].$apend;
 	  $new_prob ="2012".$apend;
+	 //  $new_prob1 ="2014".$apend;
 	}else{
 		$n_sess = $_POST['n_sess'];
 			$c_sess = $_POST['c_sess'];
-		  $new_prob =2012;	
+		  $new_prob =2012;
+		//   $new_prob1 =2014;		
 	}
 	$c_lv = $_POST['c_lv'];
 	
@@ -63,23 +65,19 @@ $n_sess = $_POST['n_sess'].$apend;
 	 mysqli_free_result($ls_std);
 
 foreach ($list_std1 as $key => $value) {
-$cgpa = get_cgpa($c_sess, $value);
+$cgpa = get_cgpa($c_sess, $value); 
 $fail_cu=get_fail_crunit($c_lv,$value,$c_sess);
 $entry_year = get_entry_sesssion($value);
 if(!in_array($value, $sus_array)){
 
-if($entry_year['std_custome2'] >= $new_prob ){	
-/*if($c_sess== 2012 && $c_lv==1|| $c_sess >2012 && $c_lv>=1 && $c_lv<9){
-	
-	$cc=($c_sess<=2011 && $c_lv>0 && $c_lv<=7 || $c_sess<=2012 && $c_lv>1 && $c_lv<=7 || $c_sess== 2012 && $c_lv>=2 || $c_sess== 2013 && $c_lv>=3 || $c_sess== 2014 && $c_lv>=4 || $c_sess== 2015 && $c_lv>=5 || $c_sess== 2016 && $c_lv>=6 || $c_sess== 2017 && $c_lv>=7 || $c_sess== 2018 && $c_lv>=8 );
-	if(!$cc){*/
-	
-		
-	if($cgpa >1.50 && $fail_cu < 15){
+if($entry_year['std_custome2'] >= $new_prob){	
+
+if($cgpa >1.50 && $fail_cu < 15){
 
 $list_std[]=$value;
 	}
-}else{
+}
+else{
 if($cgpa >=1.00){
 
 $list_std[]=$value;
@@ -88,17 +86,6 @@ $list_std[]=$value;
 }
 }
 
-/*}else{
-
-//echo $value.'<br/>';
-  $cgpa = get_cgpa($c_sess, $value);
-  if($cgpa >=1.00){
-if(!in_array($value, $sus_array)){
-$list_std[]=$value;
-}
-}
-
-}*/
 
 }
 

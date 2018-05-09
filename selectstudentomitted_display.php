@@ -24,9 +24,9 @@
 	$s = (int)$_POST['s_session'];
 	$fos = (int)$_POST['course'];
 	$c_duration = get_course_duration( $fos );
-	$p = empty($_GET['programme']) ? 2 : $_GET['programme'];	
+	$p = empty($_POST['programme']) ? 2 : $_POST['programme'];	
 	$s_sem = "IN ('First Semester','Second Semester')";
-	$special = isset($_GET['special']) ? $_GET['special'] : false;
+	$special = isset($_POST['special']) ? $_POST['special'] : false;
 	
 	$level_reps = get_levelreps();
 	$faculty_title = G_faculty($f);

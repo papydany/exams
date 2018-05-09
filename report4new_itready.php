@@ -835,7 +835,7 @@ $c++;
 				
 				echo '<td class="s9">',$grc,'</td>',
 				 	 '<td class="s9">',
-				 	get_carryover_courses($l, $s, $p, $f, $d, $ind_std['std_id'], $fos)
+				 	get_carryover_courses_IT($l, $s, $p, $f, $d, $ind_std['std_id'], $fos)
 				 	 ,
 				 	 '</td>';
 			 }
@@ -926,16 +926,12 @@ else
    $ec="++";
 }
 
-/////End Of addition
 
-
-//				echo '<td class="tB s9">',isset($electives[2]) ? $electives[2].'*'.get_fake_chr( 2, $rpt_list, $carryov_list, $s, $ind_std['std_id'] ) : '','</td>';
 							echo '<td class="tB s9">',isset($go1) ? $go1 : '','</td>';
 							continue;
 
 
-							//echo '<td class="tB s9">',isset($electives[2]) ? $electives[2] : '','</td>';
-							//continue;
+							
 						}
 						
 						if( $i == ($aa + 1) ) {
@@ -972,9 +968,7 @@ else
 		
 				$cgpa = auto_cgpa($s, $ind_std['std_id'], $l, $c_duration, $year_of_study);
 				$finalyear = ( $special ) ? true : false;
-				// new sessional result thats why it has tru parameter
-				//$remark = get_remarks($p, $f, $d, $l, $s, $ind_std['std_id'], $cgpa, $fos, $finalyear, true );
-				//$remark = result_check_pass($l, $ind_std['std_id'], $s, $cgpa);
+				
 				$remark = result_check_pass_IT($l, $ind_std['std_id'], $s, $cgpa,$p, $f, $d);
 				$ignore = substr($remark,0,4) == 'PASS' ? false : true;
 				
@@ -985,16 +979,7 @@ else
 				if( $special ) {
 					echo '<td class="B tc">',G_degree($cgpa, $ignore),'</td>';
 				}
-				/*
-				$remyr3 ='';
-				$remyr3 =  result_check($l-1, $ind_std['std_id']);
-			 	$remyr3 = $remyr3 != '' ? "RPT ".$remyr3 : '';
 				
-				$remark = (substr($remark,0,4) != 'PASS') ? $remark : '';//. "<br>RPT ".$remyr3;
-				
-				$remark = ($remark == '') && ($remyr3 == '') ? 'PASS' : $remyr3 ;
-				*/
-				//$remark = result_check_pass($l, $ind_std['std_id'], $s);
 		echo '<td class="s9"><div class="dw">',$remark,'</div></td>',
 			 '</tr>';
 

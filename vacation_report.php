@@ -1,9 +1,7 @@
-e<?php
-
-	ob_start("ob_gzhandler");
-	include_once './config.php';
-	include_once './include_report.php';
-	
+<?php
+ob_start("ob_gzhandler");
+include_once './config.php';
+include_once './include_report.php';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -333,6 +331,7 @@ foreach( $std_off_list as $ind_std ) {
 			}
 			//$ignore=true;	
 		}
+		var_dump($remark);
 	    echo !empty($cod[2]) ? '<td class="tc B">'.G_degree($_cpga, $ignore).'</td>' : '<td class="tc B">'.G_degree($_cpga, $ignore).'</td>';			
 		echo '<td class="s9"><div class="dw" style="width:140px;">',fiTin( $remark, 200),'</div></td>',
 			 '</tr>';		 
@@ -348,8 +347,8 @@ echo '</tbody></table>';
 	echo '<div class="sph block bl" style="margin-top:30px; ">
 	<div style="border-bottom:1px solid #000; padding:4px 10px;" class="block B">STATISTICS</div>
 	<div class="st block">
-	<div><p class="a">No Of Students Registered</p> <p class="b">',get_count_numstd_reg( $d, $s, $l, $c_duration, $fos, true ),'</p></div>
-	<div><p class="a">No of Results Published</p> <p class="b">',count( $std_off_list ),'</p></div>
+	<div><p class="a">No Of Students Registered</p> <p class="b">',$c,'</p></div>
+	<div><p class="a">No of Results Published</p> <p class="b">',$c,'</p></div>
 	</div>
 	</div>';
 

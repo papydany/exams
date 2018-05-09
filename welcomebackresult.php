@@ -1352,7 +1352,7 @@ echo '</tbody></table>';
 	echo '<div class="sph block bl" style="margin-top:30px; ">
 	<div style="border-bottom:1px solid #000; padding:4px 10px;" class="block B">STATISTICS</div>
 	<div class="st block">
-	<div><p class="a">No Of Students Registered</p> <p class="b">',get_count_numstd_reg( $d, $s, $l, $c_duration, $fos ),'</p></div>
+	<div><p class="a">No Of Students Registered</p> <p class="b">',$c,'</p></div>
 	<div><p class="a">No of Results Published</p> <p class="b">',$c,'</p></div>
 	</div>
 	</div>';

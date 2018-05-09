@@ -44,10 +44,12 @@ function students_lists()
                 $apend ="-AP";
                 $std_custom6="April";
                 $new_prob ="2012".$apend;
+                //$new_prob_2 ="2014".$apend;
 				}else{
                   $apend ="-AG";
                   $std_custom6="August";
                   $new_prob ="2012".$apend;
+                 // $new_prob_2 ="2014".$apend;
 				}
 
 			$mts_2 = 	$_GET['mtsess'].$apend;
@@ -86,6 +88,7 @@ $mtl = ( $_GET['mtlevel']);
 elseif( $_SESSION['myprogramme_id'] ==1) {
 	$one_level =11;
 	$new_prob =2012;
+	//$new_prob_2 =2014;
 
 	if( $_GET['mtlevel'] != 11 )	{
 				$mtl = ( $_GET['mtlevel'] - 1 );
@@ -110,7 +113,7 @@ $o = mysqli_query($GLOBALS['connect'], 'SELECT sp.std_id, deo.`programme_option`
 $one_level =1;
 	
 	$new_prob =2012;
-
+   // $new_prob_2 =2014;
 	if($_GET['level']=="3")
 	{
 	$mtl = $_GET['mtlevel'];
@@ -182,21 +185,11 @@ if($_GET['mtlevel'] == $one_level)
 {
 	$add[$r['do_id']][] = $r;
 }else{			
-// if ur year of entry is greater or equal to 2012
-if($r['std_custome2'] >= $new_prob )
+// if ur year of entry is less than 2012
+if($r['std_custome2'] < $new_prob )
 
 {
-
-	$cgpa = get_cgpa($mts, $r['std_id']);
-	
-	$fail_cu=get_fail_crunit($mtl,$r['std_id'],$mts);
-	if($cgpa >1.50 && $fail_cu < 15)
-	{
-	$add[$r['do_id']][] = $r;	
-	}
-
-}else{
-	$cgpa = get_cgpa($mts, $r['std_id']);
+$cgpa = get_cgpa($mts, $r['std_id']);
 	//$cgpa = adv_get_cgpa($mts, $r['std_id'], $mtl);
 		//if($cgpa != 'Credit Unit Is Zero' && $cgpa < 1.00 ) 
 		if( $cgpa < 1.00 ) 	
@@ -205,6 +198,16 @@ if($r['std_custome2'] >= $new_prob )
 		}else{
 			$add[$r['do_id']][] = $r;
 		}
+	
+
+}else{
+	$cgpa = get_cgpa($mts, $r['std_id']);
+	
+	$fail_cu=get_fail_crunit($mtl,$r['std_id'],$mts);
+	if($cgpa >=1.50 && $fail_cu < 15)
+	{
+	$add[$r['do_id']][] = $r;	
+	}
 }
 }
 }

@@ -63,7 +63,7 @@
 
 	/* Quick Load Purpose */
 		$cCcid = array();
-		$al = mysqli_query( $GLOBALS['connect'], 'SELECT thecourse_id FROM all_courses WHERE level_id = '.$course_level.'  && course_custom2 = '.$course_field.' && course_custom5 = '.$curricullum_year.'' );
+		$al = mysqli_query( $GLOBALS['connect'], 'SELECT thecourse_id FROM all_courses WHERE level_id = '.$course_level.'  && course_custom2 = '.$course_field.' && course_status="C" && course_custom5 = '.$curricullum_year.'' );
 		if( 0!=mysqli_num_rows($al)) {
 			while( $data=mysqli_fetch_assoc($al) ) {
 				$cCcid[] = $data['thecourse_id'];
@@ -72,7 +72,7 @@
 		}
 	/* Quick Load Purpose */
 	
-	
+
 	/* Courses Check Existsing - FOR DEPARTMENT PURPOSES */
 	$check_existing = mysqli_query( $GLOBALS['connect'], 'SELECT thecourse_id, thecourse_title, thecourse_code, thecourse_unit FROM courses WHERE thecourse_code IN ("'.implode('","', $to_add_courses).'") && thedept_id = '.$course_dept.' && levels = "'.$course_level.'"' );
 	if( 0!=mysqli_num_rows($check_existing) ) {
@@ -99,6 +99,7 @@
 		}
 		
 	}
+	
 //exit();
 	/* Courses Check Existsing - FOR DEPARTMENT PURPOSES */
 	
@@ -143,11 +144,11 @@
 	$query_builder2 = substr($query_builder2,0,-1);
 
 	
-	$ins2 = mysqli_query($GLOBALS['connect'], 'INSERT INTO all_courses(`thecourse_id`, `course_title`, `course_code`, `course_unit`, `programme_id`, `faculty_id`, `department_id`, `level_id`, `course_semester`, `course_status`, `course_custom1`,`course_custom2`, `course_custom5`) VALUES '.$query_builder2);
+	$ins2 = mysqli_query($GLOBALS['connect'], 'INSERT INTO all_courses(`thecourse_id`, `course_title`, `course_code`, `course_unit`, `programme_id`, `faculty_id`, `department_id`, `level_id`, `course_semester`, `course_status`, `course_custom1`,`course_custom2`, `course_custom5`) VALUES '.$query_builder2) or die(mysqli_error($GLOBALS['connect']));
 	
 	
 	$certificate = isset( $_POST['certificate'] ) ? $_POST['certificate'] : 'addcourse.php'; 
-	if( mysqli_affected_rows($GLOBALS['connect'])>0 ) {
+	if( mysqli_affected_rows($GLOBALS['connect']) > 0 ) {
 
 		mysqli_close($GLOBALS['connect']);
 		header('HTTP/1.1 301 Moved Permanently');

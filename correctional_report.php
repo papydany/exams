@@ -465,10 +465,7 @@ if (($f == 6) || ($d == 25)) {
 				}else{
 				$remark = get_remarks($p, $f, $d, $l, $s, $ind_std['std_id'], $cgpa, $fos, $finalyear, true );
 			}
-			   // $remark = result_check_pass_2($l, $ind_std['std_id'], $s, $cgpa);
-				//$remark = str_replace("RPT","RESIT",$remark);
-//				$remark = str_replace("WITHDRAW","Certificate of Attaindance",$remark);
-
+			   
 				$ignore = substr($remark,0,4) == 'PASS' ? false : true;
 
 				
@@ -504,8 +501,8 @@ if (($f == 6) || ($d == 25)) {
 				
 				//$carryov_list = array();
 				
-				$grc = get_repeat_courses_111($l, $s, $ind_std['std_id'], $d);
-				
+				//$grc = get_repeat_courses_111($l, $s, $ind_std['std_id'], $d);
+				$grc = get_repeat_courses_reworked($l, $s, $ind_std['std_id'], $d);
 				echo '<td class="s9">',$grc,'</td>',
 				 	 '<td class="s9">',get_carryover_courses($l, $s, $p, $f, $d, $ind_std['std_id'], $fos),'</td>';
 			 }
@@ -576,11 +573,8 @@ if (($f == 6) || ($d == 25)) {
 				$finalyear = ( $l == $c_duration ) ? true : false;
 
 		
-				//$remark = get_remarksD1_resit($p, $f, $d, $l, $s, $ind_std['std_id'], $cgpa, $fos, $finalyear );
-				$remark = get_remarks_corr($p, $f, $d, $l, $s, $ind_std['std_id'], $cgpa, $fos, $finalyear,false );
-				//var_dump($remark);
-				//$remark = get_remarks($p, $f, $d, $l, $s, $ind_std['std_id'], $cgpa, $fos, $finalyear, false,$fail_cu );
-				//}
+				$remark = get_remarks_corr($p, $f, $d, $l, $s, $ind_std['std_id'], $cgpa, $fos, $finalyear,false);
+				
 				$ignore = substr($remark,0,4) == 'PASS' ? false : true;
 				
 				if( $l > 1 )

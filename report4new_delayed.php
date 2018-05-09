@@ -310,7 +310,8 @@ echo '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="TABL
 	echo '<tbody>';
 
 
-$std_off_list = fetch_student_mat( $d, $p, $l, $f, $s, $fos, $special, $c_duration );
+$std_off_list = fetch_student_mat_delay( $d, $p, $l, $f, $s, $fos, $special, $c_duration );
+
 
 $c=0;
 
@@ -926,8 +927,8 @@ if (( test_result($ind_std['std_id'], $l, ($s-1), 'delay') == 'true' ) && ($l ==
 				
 				//$carryov_list = array();
 				
-				$grc = get_repeat_courses_111($l, $s, $ind_std['std_id'], $d);
-				
+				//$grc = get_repeat_courses_111($l, $s, $ind_std['std_id'], $d);
+				$grc =get_repeat_courses_reworked_agric($l, $s, $ind_std['std_id'], $d,$f);
 				$delay = take_courses_delay_array($ind_std['std_id'], $l, ($s));
 				
 				echo '<td class="s9">',$grc,'</td>',
@@ -1149,7 +1150,8 @@ function take_courses_delay($stdid, $l, $s, $taketype='')
 
       $s3=$s-1; $s2=$s-2;// for two session
 		//$sql = 'Select course_code From all_courses Where course_custom2 = '.$fos.' && level_id='.$l3.' && course_custom5='.$s3.' && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id='.$l3.' && std_mark_custom2='.$s3.' )';
-		$sql = 'Select course_code From all_courses Where course_custom2 = '.$fos.' && level_id ='.$l.' && course_custom5='.$s.'  && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id <='.($l).' && (std_mark_custom2='.$s3.' || std_mark_custom2='.$s2.') )';
+		$sql = 'Select course_code From all_courses Where course_custom2 = '.$fos.' && level_id ='.$l.' && course_custom5='.$s3.'  && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id <='.($l).' && (std_mark_custom2='.$s3.' || std_mark_custom2='.$s2.') )';
+	
 		$q = mysqli_query($GLOBALS['connect'], $sql );
 		//$take = '';
 		if (0!=mysqli_num_rows($q)) {
@@ -1158,7 +1160,7 @@ function take_courses_delay($stdid, $l, $s, $taketype='')
 				$take .= ', '.substr($r['course_code'],0,3).' '.substr($r['course_code'],3,4);
 			}
 		}
-		// ----------------
+
 		
 	//}	
 		return $take != '' ? substr($take,2) : '';

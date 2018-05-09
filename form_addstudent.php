@@ -33,6 +33,12 @@
 	}
 	
 	
+	if($yearsession >= "2016")
+	{
+header('HTTP/1.1 301 Moved Permanently');
+		header('Location: '.$certificate.'?i=2');
+		exit('Not All Action Could Be Performed');	
+	}
 	$clean_list = array();
 	foreach( $_POST['mn'] as $k=>$ll ) {
 		
