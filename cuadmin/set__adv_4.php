@@ -200,17 +200,19 @@ TABLESS;
 					//$merge = array_merge( $lsB[1], $lsB[2] );
 					$disable_keys = array();
 					foreach( $merge as $th ) {
-						$grade = return_grade( $results[ $th['thecourse_id'] ]['std_mark'] );
-						
+						//$grade = return_grade( $results[ $th['thecourse_id'] ]['std_mark'] );
+						$grade =  $results[ $th['thecourse_id'] ]['std_grade'];
+						//echo $grade;
+
 						$surname = empty($surname) ? '&nbsp;' : $surname;
 						$othername = empty($othername) ? '&nbsp;' : $othername;
 						
-						if( empty($grade['grade']) ) {
+						if( empty($grade) ) {
 							echo '<td><input name="b[',$std_id,'~',$matric_no,'~',$surname,'~',$othername,'~',$th['thecourse_id'],'~',$th['c_unit'],'~',$th['csemester'],']" value="" type="text" maxlength="1" size="1" />',
 							'</td>';
 						} else {
 							$disable_keys[] = $th;
-							echo '<td><input maxlength="1" size="1" name="b[',$std_id,'~',$matric_no,'~',$surname,'~',$othername,'~',$th['thecourse_id'],'~',$th['c_unit'],']" value="',strtoupper($grade['grade']),'" type="text" />',
+							echo '<td><input maxlength="1" size="1" name="b[',$std_id,'~',$matric_no,'~',$surname,'~',$othername,'~',$th['thecourse_id'],'~',$th['c_unit'],']" value="',strtoupper($grade),'" type="text" />',
    							'</td>';							
 						}
 					}

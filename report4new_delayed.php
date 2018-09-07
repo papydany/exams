@@ -137,9 +137,16 @@
 	
 //report design setting
 
-	
+	if($s < 2013)
+	{
 	$list_courses_first = fetch_courses( $d, $p, $fetch_level, 'first semester', $fetch_sess, $f, $fos );
 	$list_courses_sec = fetch_courses( $d, $p, $fetch_level, 'second semester', $fetch_sess, $f, $fos );
+}else{
+
+	$list_courses_first = fetch_courses_delay( $d, $p, $fetch_level, 'first semester', $fetch_sess, $f, $fos );
+	$list_courses_sec = fetch_courses_delay( $d, $p, $fetch_level, 'second semester', $fetch_sess, $f, $fos );
+}
+
 
 $arr1 = array();
 $arr2 = array();
@@ -443,7 +450,7 @@ foreach( $std_off_list as $ind_std )
 //				echo '<td class="s9">',$grc,'</td><td class="s9">',get_carryover_courses($l, $s, $p, $f, $d, $ind_std['std_id'], $fos),'</td>';
 			 }
 			 	
-				
+
 			 	#gets student res 4 1st and 2nd semester then merge them
 				if( $aa != 0 || $ab != 0 ) 
 				{
@@ -937,7 +944,7 @@ if (( test_result($ind_std['std_id'], $l, ($s-1), 'delay') == 'true' ) && ($l ==
 					
 				 	// '<td class="s9">',get_carryover_courses($l, $s, $p, $f, $d, $ind_std['std_id'], $fos),'</td>';
 			 }
-			 	
+			
 				
 			 	#gets student res 4 1st and 2nd semester then merge them
 				if( $aa != 0 || $ab != 0 ) {
@@ -1177,7 +1184,7 @@ function take_courses_delay_array($stdid, $l, $s, $taketype='')
 
       $s3=$s-1; $s2=$s-2;// for two session
 		//$sql = 'Select course_code From all_courses Where course_custom2 = '.$fos.' && level_id='.$l3.' && course_custom5='.$s3.' && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id='.$l3.' && std_mark_custom2='.$s3.' )';
-		$sql = 'Select course_code,course_semester From all_courses Where course_custom2 = '.$fos.' && level_id ='.$l.' && course_custom5='.$s.'  && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id <='.($l).' && (std_mark_custom2='.$s3.' || std_mark_custom2='.$s2.') )';
+		$sql = 'Select course_code,course_semester From all_courses Where course_custom2 = '.$fos.' && level_id ='.$l.' && course_custom5='.$s3.'  && course_status IN ("C") && thecourse_id NOT IN ( Select stdcourse_id From students_results Where std_id='.$stdid.' && level_id <='.($l).' && (std_mark_custom2='.$s3.' || std_mark_custom2='.$s2.') )';
 		$q = mysqli_query($GLOBALS['connect'], $sql );
 		//$take = '';
 		if (0!=mysqli_num_rows($q)) {

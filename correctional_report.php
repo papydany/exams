@@ -30,7 +30,7 @@
 	$month = $_GET['month'];
 	$level_reps = get_levelreps();
 	$faculty_title = G_faculty($f);
-
+$terminal =$c_duration + 2;
 //report design setting
 
 	if($l > 1 ){ // $special
@@ -57,7 +57,13 @@
 	if( $special ){
 		
 		$set['class'] = array(0=>'<th>CLASS OF DEGREE</th>', 1=>'<th></th>', 2=>'<th class="tB"></th>');
+			if($terminal == $l){
+          if($s >= 2013){
+		$set['dr'] ='CORRECTIONAL TERMINAL DEGREE RESULTS';
+	}
+	}else{
 		$set['dr'] = 'CORRECTIONAL DEGREE RESULTS';
+	}
 		
 		$set['bottom'] = '<p style="margin-left:50px">
 						  <span>_________________________________</span>
@@ -333,7 +339,7 @@ foreach( $std_off_list as $ind_std ) {
 	$fullname = $ind_std['surname'].' '.$ind_std['firstname'].' '.$ind_std['othernames'];
 	$recid = $recid . $ind_std['std_id'].",";
 	echo '<tr>';
-		echo '<td>',$c,'</td>',
+		echo '<td>',$c,'<br/>Corrected Entries</td>',
 			 '<td>',strtoupper($fullname),'</td>',
 			 '<td>',$ind_std['matric_no'],'</td>';
 			 

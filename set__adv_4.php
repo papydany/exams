@@ -234,18 +234,19 @@ TABLESS;
 					//$merge = array_merge( $lsB[1], $lsB[2] );
 					$disable_keys = array();
 					foreach( $merge as $th ) {
-						$grade = return_grade( $results[ $th['thecourse_id'] ]['std_mark'] );
+						//$grade = return_grade( $results[ $th['thecourse_id'] ]['std_mark'] );
+						$grade = $results[ $th['thecourse_id'] ]['std_grade'];
 						
 						$surname = empty($surname) ? '&nbsp;' : $surname;
 						$othername = empty($othername) ? '&nbsp;' : $othername;
 						
-						if( empty($grade['grade']) ) {
+						if( empty($grade) ) {
 							echo '<td><input name="b[',$std_id,'~',$matric_no,'~',$surname,'~',$othername,'~',$th['thecourse_id'],'~',$th['c_unit'],'~',$th['csemester'],']" value="" type="text" maxlength="1" size="1" />',
 							'</td>';
 						} else {
 							$disable_keys[] = $th;
 							$readonly = ( isset($_SESSION['myprogramme_id']) && $_SESSION['myprogramme_id'] == '1' ) || ( isset($_SESSION['myedit_permission']) && $_SESSION['myedit_permission'] == 1 ) ? '' : 'readonly="readonly"';
-							echo '<td><input maxlength="1" size="1" name="b[',$std_id,'~',$matric_no,'~',$surname,'~',$othername,'~',$th['thecourse_id'],'~',$th['c_unit'],']" value="',strtoupper($grade['grade']),'" ',$readonly,' type="text" />',
+							echo '<td><input maxlength="1" size="1" name="b[',$std_id,'~',$matric_no,'~',$surname,'~',$othername,'~',$th['thecourse_id'],'~',$th['c_unit'],']" value="',strtoupper($grade),'" ',$readonly,' type="text" />',
    							'</td>';							
 						}
 					}

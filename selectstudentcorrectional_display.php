@@ -1,6 +1,5 @@
 <?php
-	
-	ob_start("ob_gzhandler");
+ob_start("ob_gzhandler");
 	include_once './config.php';
 	//include_once'./myloginquery.php';
 	include_once './include_report.php';
@@ -30,6 +29,8 @@
 	$month = $_POST['month'];
 	$level_reps = get_levelreps();
 	$faculty_title = G_faculty($f);
+	$terminal =$c_duration + 2;
+	
 //report design setting
 
 	if($l > 1 ){ // $special
@@ -56,7 +57,14 @@
 	if( $special ){
 		
 		$set['class'] = array(0=>'<th>CLASS OF DEGREE</th>', 1=>'<th></th>', 2=>'<th class="tB"></th>');
+				if($terminal == $l){
+          if($s >= 2013){
+		$set['dr'] ='CORRECTIONAL TERMINAL DEGREE RESULTS';
+	}
+}else{
 		$set['dr'] = 'CORRECTIONAL DEGREE RESULTS';
+	}
+
 		
 		$set['bottom'] = '<p style="margin-left:50px">
 						  <span>_________________________________</span>
@@ -321,7 +329,7 @@ FROM  students_profile  WHERE std_id = '.$value.' ORDER BY matric_no, surname AS
 	$fullname = $ind_std['surname'].' '.$ind_std['firstname'].' '.$ind_std['othernames'];
 	$recid = $recid . $ind_std['std_id'].",";
 	echo '<tr>';
-		echo '<td>',$c,'</td>',
+		echo '<td>',$c,'<br/>Corrected Entries</td>',
 			 '<td>',strtoupper($fullname),'</td>',
 			 '<td>',$ind_std['matric_no'],'</td>';
 			 
@@ -690,7 +698,7 @@ echo'</table>';
 	echo '<div class="sph block bl" style="margin-top:30px; ">
 	<div style="border-bottom:1px solid #000; padding:4px 10px;" class="block B">STATISTICS</div>
 	<div class="st block">
-	<div><p class="a">No Of Students Registered</p> <p class="b">',count( $std_off_list ),'</p></div>
+	<div><p class="a">No Of Students Registered</p> <p class="b">',$c,'</p></div>
 	<div><p class="a">No of Results Published</p> <p class="b">',$c,'</p></div>
 	</div>
 	</div>';

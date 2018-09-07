@@ -30,7 +30,7 @@
 	
 	$level_reps = get_levelreps();
 	$faculty_title = G_faculty($f);
-
+$terminal =$c_duration + 2;
 //report design setting
 
 	if($l >1 ){
@@ -57,7 +57,13 @@
 	if( $special ){
 		
 		$set['class'] = array(0=>'<th>CLASS OF DEGREE</th>', 1=>'<th></th>', 2=>'<th class="tB"></th>');
+			if($terminal == $l){
+          if($s >= 2013){
+		$set['dr'] = 'OMITTED TERMINAL DEGREE RESULTS';
+	}
+	}else{
 		$set['dr'] = 'OMITTED DEGREE RESULTS';
+	}
 		
 		$set['bottom'] = '<p style="margin-left:50px">
 						  <span>_________________________________</span>
@@ -89,8 +95,13 @@
 	} else {
 		
 		$set['class'] = array(0=>'', 1=>'', 2=>'');
-	
+		if($terminal == $l){
+          if($s >= 2013){
+		$set['dr'] = 'OMITTED TERMINAL DEGREE RESULTS';
+	}
+	}else{
 			$set['dr'] = 'OMITTED UNDERGRADUATE RESULTS';
+		}
 	
 		
 		
@@ -483,7 +494,7 @@ echo "Course Duration (".$c_duration." years.)<br>";
 	echo '<div class="sph block bl" style="margin-top:30px; ">
 	<div style="border-bottom:1px solid #000; padding:4px 10px;" class="block B">STATISTICS</div>
 	<div class="st block">
-	<div><p class="a">No Of Students Registered</p> <p class="b">',count( $std_off_list ),'</p></div>
+	<div><p class="a">No Of Students Registered</p> <p class="b">',$c,'</p></div>
 	<div><p class="a">No of Results Published</p> <p class="b">',$c,'</p></div>
 	</div>
 	</div>';

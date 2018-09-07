@@ -37,6 +37,8 @@ $n_sess = $_POST['n_sess'].$apend;
 	$fos = $_POST['fos'];
 	
 	$season = $_POST['season'];
+
+
 	
 	$all_course_id = array();
 
@@ -95,13 +97,13 @@ $list_std[]=$value;
 	// updated 	3 feb 2017	
 	$sql = 'SELECT * FROM all_courses WHERE level_id = '.$c_lv.' && course_custom5 = "'.$c_sess.'" && course_custom2 = '.$fos.' && course_status IN ("C") && thecourse_id NOT IN ( SELECT thecourse_id FROM `course_reg` WHERE std_id = '.$v.' && cyearsession <="'.$n_sess.'") ';
 			
-			$sql .= ' UNION SELECT * FROM all_courses WHERE level_id = '.$c_lv.' && course_custom5 = "'.$c_sess.'" && course_custom2 = '.$fos.' && course_status IN ("C","E") && thecourse_id NOT IN ( SELECT stdcourse_id FROM students_results WHERE std_id = '.$v.' && std_mark_custom2 <="'.$n_sess.'")';
 			
-	
-			
-			$ae = mysqli_query( $GLOBALS['connect'], $sql );
-			
-			
+			$sql .= ' UNION SELECT * FROM all_courses WHERE level_id = '.$c_lv.' && course_custom5 = "'.$c_sess.'" && course_custom2 = '.$fos.' && course_status IN ("E") && thecourse_id  IN (SELECT thecourse_id FROM course_reg WHERE std_id = '.$v.' && clevel_id = '.$c_lv.' && cyearsession = "'.$c_sess.'"  && stdcourse_custom3 IN ("C","E") && thecourse_id NOT IN ( SELECT stdcourse_id FROM students_results WHERE std_id = '.$v.' && std_mark_custom2 <="'.$n_sess.'"))';
+	/*$sql .= ' UNION SELECT * FROM all_courses WHERE level_id = '.$c_lv.' && course_custom5 = "'.$c_sess.'" && course_custom2 = '.$fos.' && course_status IN ("C","E") && thecourse_id NOT IN ( SELECT stdcourse_id FROM students_results WHERE std_id = '.$v.' && std_mark_custom2 <="'.$n_sess.'")';*/
+
+			$ae = mysqli_query( $GLOBALS['connect'], $sql )or die(mysqli_error($GLOBALS['connect']));
+		
+		
 			if( 0!=mysqli_num_rows($ae) ) {
 
 				$course_ls = array();
@@ -114,8 +116,7 @@ $list_std[]=$value;
 					$all_data[ $data['thecourse_id'] ] = $data;			
 				endwhile;
 				
-				
-				
+			
 				
 				if( !empty($course_ls) ) {
 					
@@ -167,11 +168,15 @@ $list_std[]=$value;
 			}
 			
 		}
-	}
 	
+
+	
+
 	
 	if( !empty($all_course_id) ) {
 		$all_course_id = array_unique($all_course_id);
+
+
 				
 		$values = '';
 		$ae = mysqli_query( $GLOBALS['connect'], 'SELECT thecourse_id FROM `all_courses` WHERE thecourse_id IN ('.implode(',', $all_course_id).') && `level_id` = '.$n_lv.' && `course_custom2` = '.$fos.' && `course_custom5` = "'.$n_sess.'"');
@@ -190,22 +195,24 @@ $list_std[]=$value;
 		$course_custom1 = 'YES';
 		if( !empty($all_course_id) ) {
 			$values = '';
+	
 			foreach( $all_course_id as $cid ) {
 				
 				$D = get_course_detail( $cid, $c_lv, $c_sess, $fos);
 				$values .= '('.$cid.', "'.$D['course_title'].'", "'.$D['course_code'].'", '.$D['course_unit'].', '.$D['programme_id'].', '.$D['faculty_id'].', '.$D['department_id'].', '.$n_lv.', "'.$D['course_semester'].'", "'.$course_status.'", "'.$course_custom1.'", '.$fos.', "'.$n_sess.'"),';
 			
 			}
-			
+
 			$values = substr($values, 0,-1);
 			
-			$create_curricullum = mysqli_query( $GLOBALS['connect'], 'INSERT INTO `all_courses` ( `thecourse_id`,  `course_title`,  `course_code`,  `course_unit`,  `programme_id`,  `faculty_id`,  `department_id`,  `level_id`,  `course_semester`,  `course_status`,  `course_custom1`,  `course_custom2`,  `course_custom5` ) VALUES '.$values);
+			$create_curricullum = mysqli_query( $GLOBALS['connect'], 'INSERT INTO `all_courses` ( `thecourse_id`,  `course_title`,  `course_code`,  `course_unit`,  `programme_id`,  `faculty_id`,  `department_id`,  `level_id`,  `course_semester`,  `course_status`,  `course_custom1`,  `course_custom2`,  `course_custom5` ) VALUES '.$values)or die(mysqli_error($GLOBALS['connect'])  );
 			if( mysqli_affected_rows( $GLOBALS['connect'] )>0 ) {
+			
 			}
 		}
 		
 	}
-	
+	}
 	
 	header('HTTP/1.1 301 Moved Permanently');
     header('Location: set__adv_3.php?i=1');

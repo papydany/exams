@@ -30,7 +30,7 @@
 	
 	$level_reps = get_levelreps();
 	$faculty_title = G_faculty($f);
-
+$terminal =$c_duration + 2;
 //report design setting
 
 	if($l >1 ){
@@ -57,7 +57,13 @@
 	if( $special ){
 		
 		$set['class'] = array(0=>'<th>CLASS OF DEGREE</th>', 1=>'<th></th>', 2=>'<th class="tB"></th>');
+		if($terminal == $l){
+          if($s >= 2013){
+		$set['dr'] ='OMITTED TERMINAL DEGREE RESULTS';
+	}
+	}else{
 		$set['dr'] = 'OMITTED DEGREE RESULTS';
+	}
 		
 		$set['bottom'] = '<p style="margin-left:50px">
 						  <span>_________________________________</span>
@@ -89,8 +95,13 @@
 	} else {
 		
 		$set['class'] = array(0=>'', 1=>'', 2=>'');
-	
+	if($terminal == $l){
+          if($s >= 2013){
+		$set['dr'] = 'OMIITED TERMINAL DEGREE RESULTS';
+	}
+	}else{
 			$set['dr'] = 'OMITTED UNDERGRADUATE RESULTS';
+		}
 	
 		
 		
@@ -439,10 +450,10 @@ foreach( $std_off_list as $ind_std ) {
 						
 						else {
 							//echo '<td class="tB" style="background:red"></td>';
-							if( $ll[$i]['std_grade'] == '&nbsp;&nbsp;' ) {
+							if( @$ll[$i]['std_grade'] == '&nbsp;&nbsp;' ) {
 								echo '<td class="tB" style="background:yellow"></td>';
 							} else {
-								echo '<td class="tB">',$ll[$i]['std_grade'],'</td>';
+								echo '<td class="tB">',@$ll[$i]['std_grade'],'</td>';
 							}
 						}
 					}	

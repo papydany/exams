@@ -5,7 +5,7 @@
 ?>
 <style type="text/css">
 .ups{
--webkit-transform: rotate(-90deg);
+-webkit-transform: rotate(-90deg);5
 -moz-transform: rotate(-90deg);
 -o-transform: rotate(-90deg);
 -khtml-transform: rotate(-90deg);
@@ -235,14 +235,16 @@ TABLESS;
 						echo '</tr>','<thead><tbody><tr>';
 						$disable_keys = array();
 						foreach( $merge as $th ) {
-							$grade = return_grade( $results[ $th['thecourse_id'] ]['std_mark'] );
-							if( empty($grade['grade']) ) {
+							//$grade = return_grade( $results[ $th['thecourse_id'] ]['std_mark'] );
+							$grade = $results[ $th['thecourse_id'] ]['std_grade'];
+							//if( empty($grade['grade']) ) {
+							if( empty($grade) ) {	
 								echo '<td><input name="b[',$session,'~',$th['thecourse_id'],'~',$level_id,'~',$th['c_unit'],'~',$th['csemester'],']" value="" type="text" maxlength="1" size="1" />',
 								'</td>';
 							} else {
 								$disable_keys[] = $th;
 								$readonly = ( isset($_SESSION['myprogramme_id']) && $_SESSION['myprogramme_id'] == '1' ) || ( isset($_SESSION['myedit_permission']) && $_SESSION['myedit_permission'] == 1 ) ? '' : 'readonly="readonly"';
-								echo '<td><input maxlength="1" size="1" name="b[',$session,'~',$th['thecourse_id'],'~',$th['c_unit'],'~',$level_id,']"  value="',strtoupper($grade['grade']),'" type="text" ',$readonly,' />',
+								echo '<td><input maxlength="1" size="1" name="b[',$session,'~',$th['thecourse_id'],'~',$th['c_unit'],'~',$level_id,']"  value="',strtoupper($grade),'" type="text" ',$readonly,' />',
 								'</td>';							
 							}
 						}

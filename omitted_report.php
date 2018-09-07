@@ -278,6 +278,7 @@ echo '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="TABL
 
 
 $std_off_list = fetch_student_mat_omitted( $d, $p, $l, $f, $s, $fos );
+var_dump($std_off_list);
 if( !empty($std_off_list) ){
 
 $c=0;

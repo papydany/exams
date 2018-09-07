@@ -168,8 +168,9 @@ require( "inc/header.php" );
 							//}
 						// my name is generator 
 
-					}
-				}
+					//}
+				//}
+			
 				/*	$all_course_id = array();
 		
 			$ae = mysqli_query( $GLOBALS['connect'], 'SELECT * FROM all_courses WHERE level_id = '.$c_lv.' && course_custom2 = '.$fos.' && course_status IN ("C") && course_custom5 = "'.$c_sess.'" && thecourse_id NOT IN ( SELECT thecourse_id FROM `course_reg` WHERE std_id = 19885 && clevel_id='.$c_lv.' && cyearsession = '.$c_sess.' && stdcourse_custom3 IN("C"))');//&& thecourse_id NOT IN (SELECT stdcourse_id  from students_results WHERE  std_id='.$v.' && level_id='.$c_lv.' && std_mark_custom2='.$c_sess.'))');
@@ -189,28 +190,28 @@ require( "inc/header.php" );
 				}
 			}
 				
-				var_dump($all_data);*/
+				var_dump($all_data);
 
 					header('HTTP/1.1 301 Moved Permanently');
 					header('Location: set__adv_8.php?i=1');
 					exit('Return favour');
-				
-			endif;
+				*/
+			//endif;
 			
 			
-	}
+	//}
 //}
 	
 	
 	// --------please not new codes here for dropped courses ----------
-/*if( !empty($all_course_id) ) 
+if( !empty($all_course_id) ) 
 	{
-		echo "In<br>";
+		//echo "In<br>";
 		
 			
 		$all_course_id = array_unique($all_course_id);
 		
-		print_r($all_course_id);
+		//print_r($all_course_id);
 		
 		$values = '';
 		$ae = mysqli_query( $GLOBALS['connect'], 'SELECT thecourse_id FROM `all_courses` WHERE thecourse_id IN ('.implode(',', $all_course_id).') && `level_id` = '.$n_lv.' && `course_custom2` = '.$fos.' && `course_custom5` = "'.$n_sess.'"');
@@ -226,8 +227,8 @@ require( "inc/header.php" );
 			}
 			mysqli_free_result($ae);
 		}
-		echo "<hr>";
-		print_r($all_course_id);
+		//echo "<hr>";
+		//print_r($all_course_id);
 
 
 
@@ -237,7 +238,7 @@ require( "inc/header.php" );
 		
 		if( !empty($all_course_id) ) 
 		{
-			echo "IN2<br>";
+			//echo "IN2<br>";
 
 			$values = '';
 			foreach( $all_course_id as $cid ) 
@@ -253,21 +254,23 @@ require( "inc/header.php" );
 			
 			$values = substr($values, 0,-1);
 			
-			echo 'INSERT INTO `all_courses` ( `thecourse_id`,  `course_title`,  `course_code`,  `course_unit`,  `programme_id`,  `faculty_id`,  `department_id`,  `level_id`,  `course_semester`,  `course_status`,  `course_custom1`,  `course_custom2`,  `course_custom5` ) VALUES '.$values."<hr>";
+			//echo 'INSERT INTO `all_courses` ( `thecourse_id`,  `course_title`,  `course_code`,  `course_unit`,  `programme_id`,  `faculty_id`,  `department_id`,  `level_id`,  `course_semester`,  `course_status`,  `course_custom1`,  `course_custom2`,  `course_custom5` ) VALUES '.$values."<hr>";
 
-			$create_curricullum = mysqli_query( $GLOBALS['connect'], 'INSERT INTO `all_courses` ( `thecourse_id`,  `course_title`,  `course_code`,  `course_unit`,  `programme_id`,  `faculty_id`,  `department_id`,  `level_id`,  `course_semester`,  `course_status`,  `course_custom1`,  `course_custom2`,  `course_custom5` ) VALUES '.$values);
+			$create_curricullum = mysqli_query( $GLOBALS['connect'], 'INSERT INTO `all_courses` ( `thecourse_id`,  `course_title`,  `course_code`,  `course_unit`,  `programme_id`,  `faculty_id`,  `department_id`,  `level_id`,  `course_semester`,  `course_status`,  `course_custom1`,  `course_custom2`,  `course_custom5` ) VALUES '.$values)or die(mysqli_error($GLOBALS['connect']));
 			if( mysqli_affected_rows( $GLOBALS['connect'] )>0 ) 
 			{ 
 				$processed++; 
 			}
-			echo "PROCESSED:".$processed."<br>";
+			//echo "PROCESSED:".$processed."<br>";
 		}
 		
 		
-	}
+	}}}
+endif;
+}
 	
 	
-	header('HTTP/1.1 301 Moved Permanently');
+	//header('HTTP/1.1 301 Moved Permanently');
 	if( $processed=="0" )
 	{
 		header('Location: set__adv_8.php?i=0');
@@ -296,7 +299,7 @@ require( "inc/header.php" );
 			return 0;
 
 	}
-	*/
+	
 // --------------- ends here ------------------	
 	
 	function get_profiledetail( $std ) {

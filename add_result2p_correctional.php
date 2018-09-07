@@ -324,7 +324,7 @@ TH;
 			$num2ac   = mysqli_num_rows ( $query2ac );
 			$row2ac   = mysqli_fetch_array( $query2ac );
 			$std_mark = $row2ac["std_mark"];	
-							
+			$std_grade = $row2ac["std_grade"];				
 			if ( $num2ac == 0 ) {
 				$res_status = "<img src=\"../images/wrong.png\" width=\"12\" height=\"12\" align=\"Not Added\">";
 				$radd       = "add result";
@@ -371,11 +371,12 @@ TD;
 					} else {
 			
 								
-						$grade = return_grade( $std_mark );
+						//$grade = return_grade( $std_mark );
+						$grade = $std_grade;
 						echo <<<TD
 						  <td>
-						  <input style="width:30px; text-align:center" name="std_mark2[$i]" type="text" tabindex="$i"  value="$grade[grade]" onKeyUp="updA(this, 'd$i', 'check[$i]')" size="1" maxlength="1">
-						  <input name="std_mark[$i]" style=" background:#f0f0f0; width:60px" type="text" id="d$i" onChange="if (this.value!='') document.getElementById('check[$i]').checked=true" value="$std_mark" size="5" maxlength="5">
+						  <input style="width:30px; text-align:center" name="std_mark2[$i]" type="text" tabindex="$i"  value="$grade" onKeyUp="updA(this, 'd$i', 'check[$i]')" size="1" maxlength="1">
+						  <input type="hidden" name="std_mark[$i]" style=" background:#f0f0f0; width:60px" type="text" id="d$i" onChange="if (this.value!='') document.getElementById('check[$i]').checked=true" value="$std_mark" size="5" maxlength="5">
 						  <input name="std_id[$i]" type="hidden" value="$std_id">
 						  <input name="cos_id[$i]" type="hidden" value="$course_id">
 						  <input name="matric_no[$i]" type="hidden" value="$matric_no">

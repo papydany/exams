@@ -263,7 +263,13 @@ $std_off_list = array();
 					$rpt_list = get_repeatresult_repeat( $l, $s, $ind_std['std_id'], true );
 					$carryov_list = get_repeatresult_carry_over($l, $s, $p, $f, $d, $ind_std['std_id'], $fos);
 		
-					$grc = get_repeat_courses_111($l, $s, $ind_std['std_id'], $d, true);
+					
+
+							if (($f == 6) || ($d == 25)) {
+			$grc = get_repeat_courses_111_agric($l, $s, $ind_std['std_id'], $d, true);
+			}else{
+			$grc = get_repeat_courses_111($l, $s, $ind_std['std_id'], $d, true);
+			}
 		//var_dump( $rpt_list, $carryov_list );
 	$sp = spill_long_vacation($l,$ind_std['std_id'],$s,'First Semester');
 	$sp2 = spill_long_vacation($l,$ind_std['std_id'],$s,'Second Semester');
@@ -319,12 +325,12 @@ $std_off_list = array();
 		$_cpga = auto_cgpa_vacation($s, $ind_std['std_id'], $l, $c_duration, $year_of_study);
 		//$_cpga = adv_get_cgpa_xlus($magic_s, $ind_std['std_id'], $l, 'ASC', $c_duration, ($c_duration+$calc), true);
 		//$remark = result_check_pass_3($l, $ind_std['std_id'], $s, $_cpga); // MY CODE
-		$remark = result_check_pass($l, $ind_std['std_id'], $s, $_cpga,'','vac'); // MY CODE
+		$remark = result_check_pass_vacation($l, $ind_std['std_id'], $s, $_cpga,'','vac'); // MY CODE
 		
 		if ($f == 6 ) { // faculty of agric
 			if ($l >= 5) 
 			{
-				$remark = result_check_pass($l, $ind_std['std_id'], $s, $_cpga,'','vac');
+				$remark = result_check_pass_vacation($l, $ind_std['std_id'], $s, $_cpga,'','vac');
 			}
 		}
 

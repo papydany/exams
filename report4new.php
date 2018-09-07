@@ -1119,7 +1119,7 @@ $c++;
 								'</td>';
 									}else{
 								//echo '<td class="tB s9">', result_check(3, $ind_std['std_id'], 'First Semester'),get_fake_chr( 1, $rpt_list, $carryov_list, $s, $ind_std['std_id'] ),'</td>';
-								echo '<td class="tB s9">',result_check(3, $ind_std['std_id'], 'First Semester'),result_check22(3, $ind_std['std_id'], $d,'First Semester'),
+								echo '<td class="tB s9">',result_check(3, $ind_std['std_id'], 'First Semester'),result_check22(3, $ind_std['std_id'], $d,'First Semester'),result_check_rework_44(4, $ind_std['std_id'], $d,'First Semester'),
 								
 								//get_fake_chr( 1, $rpt_list, $carryov_list, $s, $ind_std['std_id'] ),
 								'</td>';
@@ -1254,7 +1254,7 @@ else
 										//echo '<td class="tB s9">', result_check(3, $ind_std['std_id'], 'Second Semester'),get_fake_chr( 2, $rpt_list, $carryov_list, $s, $ind_std['std_id'] ),'</td>';
 										echo '<td class="tB s9">', 
 										result_check(3, $ind_std['std_id'], 'Second Semester'),
-										result_check22(3, $ind_std['std_id'], $d,'Second Semester'),
+										result_check22(3, $ind_std['std_id'], $d,'Second Semester'),result_check_rework_44(4, $ind_std['std_id'], $d,'Second Semester'),
 
 										'</td>';
 									}

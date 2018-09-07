@@ -216,7 +216,7 @@ if( !empty($all_course_id) )
 
 
 
-		$course_status = 'E';
+		$course_status = 'C';
 		$course_custom1 = 'YES';
 
 		

@@ -113,7 +113,7 @@ if ( is_array($_POST['check'])){
 					$stdresult_id = $row_c['stdresult_id'];
 					
 					$result_flag = 'Correctional';   //      Note this flag
-					$doc = date('Y-m-d');  // date of correction
+					$doc = date('Y-m-d h:i:s');  // date of correction
 					$query3ac = "SELECT *
 					FROM students_results_backup
 					WHERE stdcourse_id = '$thecos_id' AND

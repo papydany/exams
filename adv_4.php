@@ -1,5 +1,6 @@
-<?php
+<?php ini_set('memory_limit', -1);
 	session_start();
+
 	require_once './config.php';
 	
 	
@@ -11,6 +12,8 @@
 	$lvl = $_POST['level'];
 	$session = $_POST['session'];
 	$period = isset( $_POST['season'] ) ? $_POST['season'] : 'NORMAL';
+	$examofficer =$_SESSION['myexamofficer_id'];
+	$date_posted =date('Y-m-d h:i:s');
 	
 	if( isset($_POST['submit']) && $_POST['submit'] == 'Save Result' && isset($_POST['b']) && !empty($_POST['b']) ):
 		
@@ -40,9 +43,30 @@
 					
 					$_SESSION['conclude']['s'][ $std_id ] = "0~$matric_no~$surname~$othername";
 					
-					$x = mm( $v, $cu );			
+					$x = mm( $v, $cu );	
+
+						// new code by me 2018/6/4
+					$ss_ = mysqli_query($GLOBALS['connect'], 'SELECT * FROM students_results WHERE std_id = "'.$std_id.'" && level_id = "'.$lvl.'" && std_mark_custom2 = "'.$session.'" && stdcourse_id = "'.$courseid.'"  && period = "'.$period.'"' );
+							
+					// if not exists alone
 					
-					$qB .= 'UPDATE `students_results` SET `std_mark` = "'.$x['mark'].'", std_grade = "'.$v.'", cp = '.$x['cp'].' WHERE std_id = '.$std_id.' && level_id = '.$lvl.' && stdcourse_id = '.$courseid.' && std_mark_custom2 = "'.$session.'" && period = "'.$period.'";';
+					if( mysqli_num_rows($ss_) == 1 ) {
+						//var_dump(mysqli_num_rows($ss_)).'<br/>';
+					while ($value = mysqli_fetch_assoc($ss_))
+					{
+					
+						if($value['std_grade'] == $v)
+						{//echo $v.'~'.$value['std_grade'];
+
+						}else{		
+					
+					$qB .= 'UPDATE `students_results` SET `std_mark` = "'.$x['mark'].'", std_grade = "'.$v.'", cp = '.$x['cp'].',examofficer="'.$examofficer.'",date_posted="'.$date_posted.'" WHERE std_id = '.$std_id.' && level_id = '.$lvl.' && stdcourse_id = '.$courseid.' && std_mark_custom2 = "'.$session.'" && period = "'.$period.'";';
+
+					}
+					}
+						
+					
+				}
 						
 				} else {
 				
@@ -64,7 +88,7 @@
 					// if not exists alone
 					if( 0 == mysqli_num_rows($s_) ) {
 						mysqli_free_result($s_);
-						$qB .= 'INSERT INTO `students_results`(`std_id`,  `matric_no`,  `level_id`,  `stdcourse_id`, `std_mark`,  `std_grade`,  `cu`,  `cp`,  `std_cstatus`,  `std_mark_custom1`,  `std_mark_custom2`, `period` ) VALUES ('.$std_id.', "'.$matric_no.'", '.$lvl.', '.$courseid.', "'.$x['mark'].'", "'.$v.'", '.$cu.', '.$x['cp'].', "YES", "'.$sem.'", "'.$session.'", "'.$period.'");';
+						$qB .= 'INSERT INTO `students_results`(`std_id`,  `matric_no`,  `level_id`,  `stdcourse_id`, `std_mark`,  `std_grade`,  `cu`,  `cp`,  `std_cstatus`,  `std_mark_custom1`,  `std_mark_custom2`, `period`,`examofficer`,`date_posted` ) VALUES ('.$std_id.', "'.$matric_no.'", '.$lvl.', '.$courseid.', "'.$x['mark'].'", "'.$v.'", '.$cu.', '.$x['cp'].', "YES", "'.$sem.'", "'.$session.'", "'.$period.'","'.$examofficer.'","'.$date_posted.'");';
 					}
 					
 				}

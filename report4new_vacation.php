@@ -65,7 +65,7 @@ $_SESSION['agric_setup'] = ($f == 6)? true: false;
 	} else {
 		
 		$set['class'] = array(0=>'', 1=>'', 2=>'');
-		$set['dr'] = 'MID VACATIONAL RESULTS';
+		$set['dr'] = 'THIRD YEAR VACATIONAL RESULTS';
 		
 		$set['bottom'] = '<p style="margin-left:80px">
 							  <span>____________________________________________</span>
@@ -126,7 +126,7 @@ echo '<div class="bl">
 		<div class="fr">
 			<p>YEAR OF STUDY: ',$year_of_study,'</p>
 			<p>SESSION: ',$s,'/',$s+1,'</p>
-			<p>SEMESTER: MID VACATION</p>
+			<p>SEMESTER: THIRD VACATION</p>
 		</div>
 	</div>
 	<div style="color:#222;text-align:center; padding:3px 0; background:#f7f7fe; font-weight:700; font-size:14px;">
